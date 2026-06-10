@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evergreen Insurance — Get a Quote</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Evergreen Insurance</div>
+    <nav class="site-nav">
+      <a href="#">Home</a>
+      <a href="#">Coverage</a>
+      <a href="#">Claims</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Coverage that grows with you</h1>
+      <p class="tagline">Get a personalized quote in under a minute.</p>
+    </section>
+
+    <section class="quote-form-section">
+      <h2>Get Your Quote</h2>
+      <form id="quote-form" class="quote-form">
+        <label>
+          Full Name
+          <input type="text" id="fullName" placeholder="Jane Doe" required />
+        </label>
+
+        <label>
+          Email Address
+          <input type="email" id="email" placeholder="jane@example.com" required />
+        </label>
+
+        <label>
+          ZIP Code
+          <input type="text" id="zip" placeholder="02101" maxlength="5" required />
+        </label>
+
+        <label>
+          Coverage Type
+          <select id="coverageType" required>
+            <option value="">Select coverage</option>
+            <option value="auto">Auto</option>
+            <option value="home">Home</option>
+            <option value="renters">Renters</option>
+          </select>
+        </label>
+
+        <label>
+          Coverage Amount: $<span id="coverageAmountDisplay">50000</span>
+          <input
+            type="range"
+            id="coverageAmount"
+            min="10000"
+            max="500000"
+            step="10000"
+            value="50000"
+          />
+        </label>
+
+        <button type="submit">Calculate Premium</button>
+      </form>
+
+      <div id="premium-box" class="premium-box" hidden>
+        <div class="premium-label">Estimated Monthly Premium</div>
+        <div class="premium-value" id="premium-value">$0</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Evergreen Insurance. For training purposes only.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
