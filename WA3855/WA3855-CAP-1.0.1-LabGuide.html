@@ -1,0 +1,2428 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Guide: WA3855-CAP Phase 1 Capstone Project for Leaders</title>
+  <style>
+    @import url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css");
+
+:root {
+  --font-primary: system-ui, -apple-system, sans-serif;
+  --font-secondary: system-ui, -apple-system, sans-serif;
+
+  /* Brand accent — used for .objectives checkmark, etc. */
+  --accent: #ff6b00;
+
+  /* Decorative rule color — warm muted accent used for section
+     header underline, .notes / .details block borders. */
+  --rule-color: #ae9695;
+
+  --header-height: 64px;
+  --sidebar-width: 300px;
+  /* Fluid inline padding shared by the page hero and section headers. */
+  --header-padding-inline: clamp(var(--space-4), 5vw, var(--space-8));
+
+  /* Spacing scale — Tailwind-style 4px base. Numbers = step × 4px.
+     Use for all margin / padding / gap. Reserve em for spacing that
+     must scale with text (letter-spacing, etc.). */
+  --space-1:  0.25rem; /*   4px */
+  --space-2:  0.5rem;  /*   8px */
+  --space-3:  0.75rem; /*  12px */
+  --space-4:  1rem;    /*  16px */
+  --space-5:  1.5rem;  /*  24px */
+  --space-6:  2rem;    /*  32px */
+  --space-8:  3rem;    /*  48px */
+  --space-12: 5rem;    /*  80px */
+  --space-16: 8rem;    /* 128px */
+
+  --font-size-title-lg: 1.875rem;
+  --font-size-title-md: 1.375rem;
+  --font-size-title-sm: 1.1875rem;
+
+  /* Light Mode Variables */
+  --bg-main: #ffffff;
+  --bg-sidebar: white;
+  --header-color: black;
+  --text-main: #24292e;
+  --text-muted: #59636e;
+  --link-color: #0366d6;
+  --border-color: #e1e4e8;
+  --bg-color-light: #faf5ed;
+  --bg-color-muted: #f6ebdf;
+  --bg-color-intense: #5c1726;
+  --bg-color-prompt: #f0f0f0;
+  --bg-color-prompt-bubble: #ddedff;
+  --borderColor-default: #3c071266;
+  --borderColor-accent-emphasis: #0969da;
+  --fgColor-info: #0969da;
+  --borderColor-done-emphasis: #8250df;
+  --fgColor-done: #8250df;
+  --borderColor-attention-emphasis: #9a6700;
+  --fgColor-attention: #9a6700;
+  --borderColor-success-emphasis: #1a7f37;
+  --fgColor-success: #1a7f37;
+  --borderColor-danger-emphasis: #cf222e;
+  --fgColor-danger: #d1242f;
+  --table-row-color: #fff9f5;
+  --code-bg: #f8f8f8;
+  --code-color: #24292e;
+  --code-keyword: #d73a49;
+  --code-entity: #6f42c1;
+  --code-constant: #005cc5;
+  --code-string: #032f62;
+  --code-variable: #e36209;
+  --code-comment: #6a737d;
+  --code-entity-tag: #22863a;
+  --code-storage-modifier-import: #24292e;
+  --code-markup-heading: #005cc5;
+  --code-markup-list: #735c0f;
+  --code-markup-italic: #24292e;
+  --code-markup-bold: #24292e;
+  --code-markup-inserted: #22863a;
+  --code-markup-inserted-bg: #f0fff4;
+  --code-markup-deleted: #b31d28;
+  --code-markup-deleted-bg: #ffeef0;
+
+  --theme-logo: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22Layer_2%22%20version%3D%221.1%22%20viewBox%3D%220%200%203540.6%20826.8%22%3E%3Cdefs%3E%3Cstyle%3E.st0%7Bfill%3A%23fff%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Layer_1-2%22%3E%3Cpath%20d%3D%22M529.9%20468.3v126.2H492v-19.1c-12.5%2014.7-31.3%2022.8-54.5%2022.8-39%200-70.3-25.8-70.3-60.3s30.5-55.6%2077.3-55.6h44.9v-16.9c0-24.7-7.7-34.2-37.2-34.2s-38.3%209.2-39.4%2035.3h-40.5c5.1-37.5%2037.5-68.8%2081.7-68.8s75.8%2028.7%2075.8%2070.7Zm-40.5%2065.1v-20.2h-54.1c-17.3%200-25.4%206.6-25.4%2019.5V543c0%2015.5%2010.3%2022.5%2036.1%2022.5s43.4-9.6%2043.4-32ZM550.1%20535.6h42c1.5%2022.8%2011.4%2029.4%2042.3%2029.4s40.1-7%2040.1-21.7v-7.4c0-11.8-7.4-16.6-27.6-18.8l-32-2.9c-35.3-3.3-58.1-23.5-58.1-54.1s35-62.6%2075.8-62.6%2075.1%2023.9%2080.2%2061.8h-42.3c-.7-21.7-9.9-28.7-37.5-28.7s-35.7%206.2-35.7%2021v6.6c0%2011.4%207%2016.9%2024.7%2018.8l35.7%203.7c35.7%203.7%2057.8%2023.5%2057.8%2053.4s-35%2064-80.2%2064-80.6-25.4-85-62.6ZM730.8%20497.7c0-56.7%2039.4-100.1%2091.6-100.1s81%2032.4%2088.3%2078h-43.8c-2.2-31.3-14.3-42.3-45.3-42.3S776%20448%20776%20482.2v30.9c0%2034.6%2013.6%2049.7%2045.6%2049.7s43.1-11.8%2045.3-43.1h43.8c-7.4%2046-44.2%2078.4-88.3%2078.4s-91.6-43.4-91.6-100.5ZM973.6%20509.5v9.2c0%2032%2014.7%2045.3%2048.9%2045.3s42.3-8.8%2044.5-30.5h44.5c-11.8%2036.8-48.9%2064.8-88.7%2064.8S929%20558.5%20929%20500.8s39.8-103%2094.2-103%2089.1%2042.7%2089.1%2096.4v15.5H973.6Zm0-35.3v4.4h93.8v-4.4c0-30.5-12.1-43.1-44.2-43.1s-49.7%2012.9-49.7%2043.1ZM1310.3%20473.8v120.7h-41.6V471.6c0-26.1-12.9-37.9-42.3-37.9s-44.2%2012.1-44.2%2039.8v121.1h-41.6V401.4h38.6v28c14.7-20.2%2036.8-31.6%2062.2-31.6%2039.4%200%2068.8%2032%2068.8%2076.2ZM1515.3%20330.3v264.2h-39v-26.1c-13.2%2017.7-37.2%2029.8-59.6%2029.8-48.2%200-87.2-44.9-87.2-99.7s39.4-100.8%2088.7-100.8%2041.6%209.2%2055.6%2026.1v-93.5h41.6Zm-41.6%20152c0-34.2-15.1-48.9-49.7-48.9s-49.3%2014.7-49.3%2048.9v30.9c0%2034.6%2015.1%2049.7%2049.3%2049.7s49.7-15.1%2049.7-49.7v-30.9ZM1533.7%20351.2c0-16.9%2012.1-28.3%2029.1-28.3s28.7%2011.4%2028.7%2028.3-12.1%2028.3-28.7%2028.3-29.1-11.8-29.1-28.3Zm8.5%2050.1h41.6v193.2h-41.6V401.3ZM1651.8%20509.5v9.2c0%2032%2014.7%2045.3%2048.9%2045.3s42.3-8.8%2044.5-30.5h44.5c-11.8%2036.8-48.9%2064.8-88.7%2064.8s-93.8-39.8-93.8-97.5%2039.8-103%2094.2-103%2089.1%2042.7%2089.1%2096.4v15.5h-138.7Zm0-35.3v4.4h93.8v-4.4c0-30.5-12.1-43.1-44.2-43.1s-49.7%2012.9-49.7%2043.1ZM1981.5%20473.8v120.7h-41.6V471.6c0-26.1-12.9-37.9-42.3-37.9s-44.2%2012.1-44.2%2039.8v121.1h-41.6V401.4h38.6v28c14.7-20.2%2036.8-31.6%2062.2-31.6%2039.4%200%2068.8%2032%2068.8%2076.2ZM2028.3%20537.8V435.9h-40.1v-34.6h40.1v-71h41.2v71h52.3v34.6h-52.3v104.2c0%2012.5%206.6%2018.8%2019.1%2018.8h29.4v37.5h-27.2c-38.3%200-62.6-22.8-62.6-58.5ZM241.5%2089.1l74.4%2052.3L212.7%208.8c-1.1-1.5-2.9-2.2-4.6-2.2s-2.7.5-3.8%201.4l-17%2014.6c-2.5%202.1-2.7%206-.5%208.4l54.7%2058.1ZM124.8%2082.3l103.5%2059.1%2050.5%2016.5%2019.9%206.5%2019.9%206.5%208.5%202.8-17.5-12.2-40.6-28.6-40.6-28.6-81.3-57.1c-1.2-.8-2.6-1.2-4-1.2-2.4%200-4.7%201.2-6.1%203.3l-14.6%2023c-2.1%203.4-1.1%207.9%202.4%2010ZM70.7%20164.3l163%2036.8%2060.7%201.1%2020.9.4h5.7l15.2.4h2l11.9.3h3.3l-2.8-.9-8.5-2.8-11.2-3.6-3.8-1.2-12.8-4.2-7.1-2.3-40.2-13.1-47.2-15.4-135.9-44.4c-.9-.3-1.7-.4-2.6-.4-3.8%200-7.3%202.5-8.4%206.4l-8.8%2032.1c-1.3%204.7%201.6%209.6%206.4%2010.8ZM36.3%20279.1h.6l225-16.8%2067.2-19.2%2020.1-5.7%2020.1-5.7%206.1-1.7%2011.2-3.2%209-2.6h-8.3c0-.1-10.3-.3-10.3-.3l-16-.3-30.3-.6h-.1l-49.6-1-49.6-1-196.1-3.7c-6%200-10.8%204.9-10.6%2010.9l1.1%2040.6c.2%205.8%204.9%2010.3%2010.6%2010.3ZM38.4%20425.2l276.7-107.8%2068.1-44.1%2017.5-11.3%2024.8-16.1%209.8-6.4%2016.3-10.5-16.4%204.7-9.9%202.8-9.9%202.8-23.7%206.7-21.8%206.2-9%202.6-47.7%2013.6-47.7%2013.6-251.1%2071.7c-7%202.1-10.9%209.6-8.6%2016.5l15.8%2046.9c1.8%205.4%206.9%208.8%2012.3%208.8s3-.3%204.5-.8ZM483%20232.6l-8.7%205.6-8.6%205.6-29.6%2019.1-11.2%207.2-17.3%2011.2-41.7%2027-41.7%2027L38.8%20520.2c-7.4%205-9.2%2015.1-4%2022.3l35.1%2049.1c3.1%204.3%207.9%206.6%2012.8%206.6s6.7-1%209.6-3.2l443.4-350-22.7-31.8-30%2019.4ZM1515.3%20649.2h16.7v136.4h-16.7V649.2ZM1561.3%20740.9v4.4c0%2019.4%208.6%2027.4%2028.7%2027.4s23.4-5.3%2024.9-17.7h19.4c-6.7%2018.8-25.7%2032.5-44.3%2032.5-27.2%200-47.3-20.5-47.3-49.6s20.3-53.6%2047.3-53.6%2044.7%2021.7%2044.7%2049.6v7h-73.3Zm0-16.1v2.1h54.7v-2.5c0-17.9-7-25.3-25.8-25.3s-28.9%207.8-28.9%2025.7ZM1724.9%20720.8v64.8h-15.8v-11.2c-6.1%208.4-16.5%2013.1-29.4%2013.1-19.9%200-35.7-13.7-35.7-30.8s15.2-27.9%2036.7-27.9h27.6v-8.9c0-15-4.9-20.7-21.5-20.7s-22.4%205.5-23.2%2020.7h-17.1c3.2-20.5%2019.8-35.5%2040.8-35.5s37.6%2014.6%2037.6%2036.5Zm-16.7%2034.4v-12.3h-32.3c-9.3%200-13.9%203.8-13.9%2011.2v5.3c0%209.3%206.3%2013.3%2021.1%2013.3s25.1-5.3%2025.1-17.5ZM1791.2%20684.3v21.1h-15.4c-13.5%200-19.6%206.1-19.6%2019.6v60.6h-16.7v-99.4h15.8v18.6c7.8-11.4%2020.5-18.6%2035.9-20.5ZM1885.4%20723.5v62.1h-16.7v-64c0-15.8-7.4-22.4-24.3-22.4s-25.7%207-25.7%2023.4v63.1H1802v-99.4h15.8v14.8c7.6-10.6%2018.8-16.7%2031.7-16.7%2020.7%200%2035.9%2016.2%2035.9%2039.1ZM1897.2%20660.9c0-7.6%205.5-12.9%2012.9-12.9s12.7%205.3%2012.7%2012.9-5.5%2012.9-12.7%2012.9-12.9-5.5-12.9-12.9Zm4.5%2025.3h16.7v99.4h-16.7v-99.4ZM2019.7%20723.5v62.1H2003v-64c0-15.8-7.4-22.4-24.3-22.4s-25.7%207-25.7%2023.4v63.1h-16.7v-99.4h15.8v14.8c7.6-10.6%2018.8-16.7%2031.7-16.7%2020.7%200%2035.9%2016.2%2035.9%2039.1ZM2121.7%20686.2v102.2c0%2020.9-17.7%2038.4-43.7%2038.4s-44.1-17.7-44.5-37.4h17.1c.2%2016.9%207%2022.6%2027.4%2022.6s27-6.8%2027-25.5v-19.2c-8.6%209.5-19.2%2014.4-30.8%2014.4-24.9%200-43.9-21.1-43.9-49s18.8-48.3%2044.1-48.3%2024.9%206.5%2031.5%2015.8v-14.1h15.8Zm-16.7%2052.5v-11.8c0-19.4-8.4-27.5-27.9-27.5s-28.3%208.2-28.3%2027.5v11.8c0%2020%208.6%2028.5%2028.3%2028.5s27.9-8.5%2027.9-28.5Z%22%20class%3D%22st0%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M2493.5%20398.1h45.6c7.9%200%2015.1.9%2021.6%202.7%206.5%201.8%2012%204.5%2016.6%208.1%204.6%203.6%208.1%208.2%2010.6%2013.6%202.5%205.5%203.8%2011.9%203.8%2019.3v.8c0%207.5-1.3%2014-3.9%2019.4s-6.1%209.9-10.7%2013.4-10.1%206.1-16.5%207.8c-6.4%201.7-13.4%202.6-20.9%202.6h-19.8V540h-26.4V398.1Zm45.6%2068.8c8.7%200%2015.4-2.1%2019.9-6.1%204.6-4.1%206.9-10.1%206.9-18v-.8c0-8.5-2.4-14.5-7-18-4.7-3.6-11.3-5.4-19.7-5.4H2520V467h19.2ZM2638.3%20541.9c-4.8%200-9.3-.6-13.5-1.8-4.2-1.2-7.9-3-11-5.5-3.1-2.4-5.6-5.6-7.4-9.5-1.9-3.9-2.8-8.6-2.8-14s1.4-11.2%204.2-15.4c2.8-4.2%206.6-7.5%2011.3-10.1%204.8-2.6%2010.4-4.5%2016.9-5.7%206.5-1.2%2013.4-1.8%2020.8-1.8h12.9v-5.4c0-7.1-1.4-12.3-4.1-15.8-2.7-3.5-7.6-5.2-14.8-5.2s-11.1%201.4-14.2%204.3c-3.1%202.9-5%206.9-5.7%2012.1h-23.2c.5-6.1%202.1-11.3%204.6-15.6%202.5-4.3%205.8-7.8%209.7-10.6%204-2.8%208.5-4.8%2013.7-6.1s10.6-2%2016.5-2%2011.2.6%2016.3%201.9c5%201.3%209.4%203.4%2013.2%206.4%203.8%203%206.7%206.9%208.8%2011.7%202.1%204.8%203.2%2010.8%203.2%2018v68.1h-23.6v-12.7c-3.4%204.5-7.6%208.1-12.5%2010.7s-11.3%204-19.2%204Zm5.8-17.3c7.4%200%2013.5-1.8%2018.4-5.5s7.2-8.8%207.2-15.6v-10.3h-12.3c-9.1%200-16.4%201.2-21.8%203.7-5.4%202.5-8.1%206.9-8.1%2013.2s1.3%207.9%203.9%2010.5c2.6%202.7%206.9%204%2012.8%204ZM2722.1%20436.1h24v19.5c3.3-6.6%207.6-11.7%2012.8-15.4%205.2-3.6%2012.2-5.5%2020.9-5.7v22.4c-5.3%200-10%20.5-14.2%201.5-4.2%201-7.7%202.6-10.6%204.9-2.9%202.2-5.1%205.2-6.6%208.8-1.5%203.6-2.3%208.2-2.3%2013.8v54h-24V436.1ZM2837.9%20541.7c-10.3%200-18.1-2.7-23.4-8-5.3-5.3-7.9-12.9-7.9-22.9v-56.9h-13.9V436h13.9v-22.8h24V436h22.8v17.9h-22.8v54.5c0%204.6%201%208%203.1%2010.1%202.1%202.1%205%203.2%208.8%203.2s8.5-.7%2011.7-2v19.2c-1.9.7-4.1%201.3-6.8%201.8-2.6.5-5.8.8-9.5.8ZM2970.8%20541.9c-7.7%200-14.8-1.2-21.2-3.8-6.5-2.5-12.1-6.1-16.9-10.7-4.8-4.6-8.5-10.2-11.1-16.7-2.6-6.5-4-13.7-4-21.6v-1.6c0-8.1%201.4-15.4%204.1-21.9%202.7-6.5%206.4-12.2%2011.2-16.9%204.8-4.7%2010.4-8.3%2016.9-10.9%206.5-2.6%2013.6-3.9%2021.2-3.9s14.6%201.2%2021%203.8c6.5%202.5%2012.1%206.1%2016.9%2010.8%204.8%204.7%208.5%2010.3%2011.2%2016.8%202.7%206.5%204.1%2013.7%204.1%2021.6v1.6c0%208.1-1.4%2015.4-4.1%2021.9-2.7%206.5-6.4%2012.2-11.2%2016.9-4.8%204.7-10.4%208.3-16.9%2010.8-6.5%202.5-13.6%203.8-21.2%203.8Zm.2-18.9c9%200%2016-3.1%2021-9.2s7.5-14.5%207.5-25.2v-1.4c0-10.7-2.5-19.1-7.5-25.2-5-6.1-12-9.2-21-9.2s-16%203-21.1%209.1c-5.1%206.1-7.6%2014.5-7.6%2025.1v1.6c0%2010.7%202.5%2019.1%207.5%2025.2%205%206.1%2012.1%209.2%2021.2%209.2ZM3050.8%20454h-14.1v-17.9h14.1v-13.9c0-11.5%203-20.2%209-26.2s14.6-8.9%2025.9-8.9%205.4.2%207.3.5c2%20.3%204.1.8%206.4%201.5v18.6c-1.5-.5-3.1-1-4.9-1.3-1.8-.3-3.8-.5-6.1-.5-4.9%200-8.4%201.4-10.5%204.3-2.1%202.9-3.2%206.5-3.2%2011v14.9h23.6V454h-23.6v85.9h-24V454ZM2531.7%20614.8h52.6l45%20141.8h-43.1l-7.5-26.4h-47l-7.5%2026.4h-37.9l45.4-141.8Zm7.9%2087.5h31.1l-15.5-54.6-15.7%2054.6ZM2689%20759.1c-7.8%200-15-1.1-21.6-3.4-6.6-2.2-12.4-5.6-17.3-10.1-4.9-4.4-8.7-9.8-11.5-16.5-2.8-6.6-4.2-14.3-4.2-23v-1.6c0-8.6%201.4-16.3%204.4-23%202.9-6.7%206.9-12.4%2011.9-17.1%205-4.6%2010.9-8.2%2017.6-10.6%206.7-2.4%2013.9-3.7%2021.5-3.7s12.5.7%2018.4%202.2c5.9%201.5%2011.1%203.8%2015.8%207.1%204.6%203.4%208.4%207.9%2011.4%2013.3s4.7%2012.1%205.3%2020h-33.3c-.8-4.9-2.5-8.6-5.1-11.2-2.6-2.6-6.4-3.9-11.6-3.9s-11.2%202.2-14.7%206.7c-3.4%204.4-5.2%2011-5.2%2019.7v1.6c0%209.1%201.7%2016%205.2%2020.5%203.4%204.6%208.5%206.8%2015.3%206.8s9.1-1.5%2012.3-4.4c3.2-2.9%205.1-7.2%205.8-12.9h31.9c-.5%2013.1-5.2%2023.6-13.9%2031.5s-21.5%2011.8-38.3%2011.8ZM2806.3%20759.1c-7.8%200-15-1.1-21.6-3.4-6.6-2.2-12.4-5.6-17.3-10.1-4.9-4.4-8.7-9.8-11.5-16.5-2.8-6.6-4.2-14.3-4.2-23v-1.6c0-8.6%201.4-16.3%204.4-23%202.9-6.7%206.9-12.4%2011.9-17.1%205-4.6%2010.9-8.2%2017.6-10.6%206.7-2.4%2013.9-3.7%2021.5-3.7s12.5.7%2018.4%202.2c5.9%201.5%2011.1%203.8%2015.8%207.1%204.6%203.4%208.4%207.9%2011.4%2013.3s4.7%2012.1%205.3%2020h-33.3c-.8-4.9-2.5-8.6-5.1-11.2-2.6-2.6-6.4-3.9-11.6-3.9s-11.2%202.2-14.7%206.7c-3.4%204.4-5.2%2011-5.2%2019.7v1.6c0%209.1%201.7%2016%205.2%2020.5%203.4%204.6%208.5%206.8%2015.3%206.8s9.1-1.5%2012.3-4.4c3.2-2.9%205.1-7.2%205.8-12.9h31.9c-.5%2013.1-5.2%2023.6-13.9%2031.5s-21.5%2011.8-38.3%2011.8ZM2925.3%20759.1c-8.2%200-15.7-1.2-22.6-3.5-6.9-2.3-12.8-5.7-17.7-10.2-5-4.5-9-10-11.8-16.7-2.9-6.6-4.3-14.2-4.3-22.6v-1.6c0-8.3%201.4-15.8%204.4-22.5%202.9-6.7%206.9-12.4%2011.9-17.2%205-4.8%2011-8.4%2017.9-10.9%206.9-2.5%2014.2-3.8%2022-3.8s13.9%201.1%2020.2%203.2c6.4%202.1%2012%205.4%2016.9%209.7%204.8%204.4%208.6%209.9%2011.4%2016.7%202.8%206.8%204.3%2014.8%204.3%2024v9.3h-73c.5%206.9%202.7%2012.2%206.4%2016%203.8%203.8%208.8%205.7%2015.2%205.7s10.3-1.2%2013-3.6%204.4-5.3%205.1-8.7h33.3c-1.6%2011.8-6.8%2020.8-15.7%2027.2-8.9%206.3-21.2%209.5-36.9%209.5Zm18.1-66.1c-.3-6.3-1.9-11.2-5-14.5-3-3.3-7.5-5-13.3-5s-9.9%201.7-13.3%205c-3.4%203.3-5.6%208.1-6.6%2014.5h38.1ZM2994.7%20652.9h35.5v16.8c2.8-5.5%207-10.1%2012.6-13.9%205.6-3.8%2012.8-5.7%2021.5-5.7s18.2%203.2%2024.5%209.6c6.3%206.4%209.4%2016.2%209.4%2029.5v67.5h-35.5v-60.2c0-5.9-1.2-10.3-3.6-13.2-2.4-2.8-6.1-4.2-11.3-4.2s-9.6%201.6-12.8%204.8-4.9%208.1-4.9%2014.8v58h-35.5V652.9ZM3161.4%20759.1c-11.8%200-20.8-2.9-27.1-8.6-6.3-5.8-9.4-14.8-9.4-27.1v-46.2h-12.5V653h12.5v-21.6h35.5V653h20.4v24.2h-20.4V720c0%203.6.9%206.3%202.7%208.1s4.4%202.8%207.8%202.8%203.8-.1%205.4-.4c1.6-.3%203.2-.7%204.8-1.4v27c-2.2.7-5%201.3-8.3%202-3.3.7-7.1%201-11.3%201ZM3233%20759.1c-5%200-9.6-.8-13.9-2.3-4.2-1.5-7.9-3.9-10.9-7-3.2-3.2-5.7-7.2-7.4-12-1.8-4.8-2.7-10.5-2.7-17.2v-67.7h35.5v61.9c0%205.8%201.2%2010.2%203.7%2013.1%202.4%202.9%206.1%204.4%2011%204.4s9.7-1.6%2012.9-4.8c3.2-3.2%204.8-8.1%204.8-14.9v-59.7h35.5v103.8H3266v-16.1c-2.8%205.4-6.8%209.8-12%2013.3-5.2%203.4-12.2%205.2-20.9%205.2ZM3324.1%20652.9h35.5v20.6c3.3-7.8%207.7-13.5%2013.2-17%205.5-3.5%2012.3-5.2%2020.3-5.1v33.1c-10.8-.3-19.1%201.4-24.9%205-5.8%203.6-8.6%209.5-8.6%2017.8v49.2h-35.5V652.7ZM3460.4%20759.1c-8.2%200-15.7-1.2-22.6-3.5-6.9-2.3-12.8-5.7-17.7-10.2-5-4.5-9-10-11.8-16.7-2.9-6.6-4.3-14.2-4.3-22.6v-1.6c0-8.3%201.4-15.8%204.4-22.5%202.9-6.7%206.9-12.4%2011.9-17.2%205-4.8%2011-8.4%2017.9-10.9%206.9-2.5%2014.2-3.8%2022-3.8s13.9%201.1%2020.2%203.2c6.4%202.1%2012%205.4%2016.9%209.7%204.8%204.4%208.6%209.9%2011.4%2016.7%202.8%206.8%204.3%2014.8%204.3%2024v9.3h-73c.5%206.9%202.7%2012.2%206.4%2016%203.8%203.8%208.8%205.7%2015.2%205.7s10.3-1.2%2013-3.6%204.4-5.3%205.1-8.7h33.3c-1.6%2011.8-6.8%2020.8-15.7%2027.2-8.9%206.3-21.2%209.5-36.9%209.5Zm18-66.1c-.3-6.3-1.9-11.2-5-14.5-3-3.3-7.5-5-13.3-5s-9.9%201.7-13.3%205c-3.4%203.3-5.6%208.1-6.6%2014.5h38.1Z%22%20class%3D%22st0%22%2F%3E%3C%2Fsvg%3E");
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Variables */
+  --bg-main: #0d1117;
+  --bg-sidebar: #0d1117;
+  --header-color: white;
+  --text-main: #c9d1d9;
+  --text-muted: #59636e;
+  --link-color: #58a6ff;
+  --border-color: #30363d;
+  --bg-color-light: #1f2937;
+  --bg-color-muted: #010409;
+  --bg-color-intense: black;
+  --borderColor-default: #3d444d;
+  --borderColor-accent-emphasis: #1f6feb;
+  --fgColor-info: #4493f8;
+  --borderColor-done-emphasis: #8250df;
+  --fgColor-done: #ab7df8;
+  --borderColor-attention-emphasis: #9e6a03;
+  --fgColor-attention: #d29922;
+  --borderColor-success-emphasis: #238636;
+  --fgColor-success: #3fb950;
+  --borderColor-danger-emphasis: #da3633;
+  --fgColor-danger: #f85149;
+  --table-row-color: #010409;
+  --code-bg: #282a36;
+  --code-color: #c9d1d9;
+  --code-keyword: #ff7b72;
+  --code-entity: #d2a8ff;
+  --code-constant: #79c0ff;
+  --code-string: #a5d6ff;
+  --code-variable: #ffa657;
+  --code-comment: #8b949e;
+  --code-entity-tag: #7ee787;
+  --code-storage-modifier-import: #c9d1d9;
+  --code-markup-heading: #1f6feb;
+  --code-markup-list: #f2cc60;
+  --code-markup-italic: #c9d1d9;
+  --code-markup-bold: #c9d1d9;
+  --code-markup-inserted: #aff5b4;
+  --code-markup-inserted-bg: #033a16;
+  --code-markup-deleted: #ffdcd7;
+  --code-markup-deleted-bg: #67060c;
+
+  /* Brand-stable in both modes — explicit for token-coverage discipline. */
+  --accent: #ff6b00;
+  /* Decorative warm-grey accent — slightly lighter on dark for contrast. */
+  --rule-color: #d4b8b6;
+}
+
+/* ---------- [ Diagram Color Tokens ] ---------- */
+
+:root {
+  /* Raw color stops — values never change between light/dark */
+  --c-purple-50: #F5F3FF; --c-purple-100: #EDE9FE; --c-purple-200: #DDD6FE; --c-purple-400: #A78BFA; --c-purple-600: #7C3AED; --c-purple-800: #5B21B6; --c-purple-900: #4C1D95;
+  --c-teal-50: #F0FDFA;   --c-teal-100: #CCFBF1;   --c-teal-200: #99F6E4;   --c-teal-400: #2DD4BF;   --c-teal-600: #0D9488;   --c-teal-800: #115E59;   --c-teal-900: #134E4A;
+  --c-coral-50: #FFF7ED;   --c-coral-100: #FFEDD5;   --c-coral-200: #FED7AA;   --c-coral-400: #FB923C;   --c-coral-600: #EA580C;   --c-coral-800: #9A3412;   --c-coral-900: #7C2D12;
+  --c-pink-50: #FDF2F8;    --c-pink-100: #FCE7F3;    --c-pink-200: #FBCFE8;    --c-pink-400: #F472B6;    --c-pink-600: #DB2777;    --c-pink-800: #9D174D;    --c-pink-900: #831843;
+  --c-gray-50: #FAFAF9;    --c-gray-100: #F5F5F4;    --c-gray-200: #E7E5E4;    --c-gray-400: #A8A29E;    --c-gray-600: #57534E;    --c-gray-800: #292524;    --c-gray-900: #1C1917;
+  --c-blue-50: #EFF6FF;    --c-blue-100: #DBEAFE;    --c-blue-200: #BFDBFE;    --c-blue-400: #60A5FA;    --c-blue-600: #2563EB;    --c-blue-800: #1E40AF;    --c-blue-900: #1E3A8A;
+  --c-green-50: #F7FEE7;   --c-green-100: #ECFCCB;   --c-green-200: #D9F99D;   --c-green-400: #A3E635;   --c-green-600: #65A30D;   --c-green-800: #3F6212;   --c-green-900: #365314;
+  --c-amber-50: #FFFBEB;   --c-amber-100: #FEF3C7;   --c-amber-200: #FDE68A;   --c-amber-400: #FBBF24;   --c-amber-600: #D97706;   --c-amber-800: #92400E;   --c-amber-900: #78350F;
+  --c-red-50: #FEF2F2;     --c-red-100: #FEE2E2;     --c-red-200: #FECACA;     --c-red-400: #F87171;     --c-red-600: #DC2626;     --c-red-800: #991B1B;     --c-red-900: #7F1D1D;
+}
+
+/* Dark mode — remap which stops the color classes use */
+[data-theme="dark"] [class^="c-"] > rect,
+[data-theme="dark"] [class^="c-"] > circle,
+[data-theme="dark"] [class^="c-"] > ellipse,
+[data-theme="dark"] [class^="c-"] > polygon { fill: var(--_800); stroke: var(--_200); }
+[data-theme="dark"] [class^="c-"] > .d-th,
+[data-theme="dark"] [class^="c-"] > .d-t     { fill: var(--_100); }
+[data-theme="dark"] [class^="c-"] > .d-ts    { fill: var(--_200); }
+
+a {
+  text-decoration: none;
+}
+
+h2, h3, h4 {
+  line-height: 105%;
+}
+
+.sect2 {
+  margin-top: var(--space-8);
+}
+
+.sect2 h3 {
+  line-height: 105%;
+  margin-bottom: var(--space-4);
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/* Size roles — matches asciidoctor's `<div class="paragraph lead">`
+   wrapper and inline `<span class="small">` form. */
+.lead {
+  font-size: 1.266em;
+}
+
+.big {
+  font-size: 1.125em;
+}
+
+.small {
+  font-size: 0.889em;
+}
+
+pre {
+  font-size: 12px;
+}
+
+table.tableblock {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-radius: var(--radius-small, 8px);
+  box-shadow: 0 0 0 1px var(--borderColor-default);
+  font-variant: tabular-nums;
+  max-width: 100%;
+  overflow: hidden;
+  width: fit-content;
+}
+
+table.tableblock > thead > tr:first-child > th,
+table.tableblock > thead > tr:first-child > td,
+table.tableblock > tbody:first-child > tr:first-child > th,
+table.tableblock > tbody:first-child > tr:first-child > td {
+  border-top: 0;
+}
+table.tableblock > tbody:last-child > tr:last-child > th,
+table.tableblock > tbody:last-child > tr:last-child > td,
+table.tableblock > tfoot:last-child > tr:last-child > th,
+table.tableblock > tfoot:last-child > tr:last-child > td {
+  border-bottom: 0;
+}
+table.tableblock th:first-child,
+table.tableblock td:first-child {
+  border-left: 0;
+}
+table.tableblock th:last-child,
+table.tableblock td:last-child {
+  border-right: 0;
+}
+
+table.tableblock > thead > tr:first-child > th:first-child,
+table.tableblock > tbody:first-child > tr:first-child > td:first-child {
+  border-top-left-radius: var(--radius-small, 8px);
+}
+table.tableblock > thead > tr:first-child > th:last-child,
+table.tableblock > tbody:first-child > tr:first-child > td:last-child {
+  border-top-right-radius: var(--radius-small, 8px);
+}
+table.tableblock > tbody:last-child > tr:last-child > th:first-child,
+table.tableblock > tbody:last-child > tr:last-child > td:first-child {
+  border-bottom-left-radius: var(--radius-small, 8px);
+}
+table.tableblock > tbody:last-child > tr:last-child > th:last-child,
+table.tableblock > tbody:last-child > tr:last-child > td:last-child {
+  border-bottom-right-radius: var(--radius-small, 8px);
+}
+
+table.tableblock th {
+  font-weight: 600;
+  background-color: var(--bg-color-muted);
+}
+
+table th.halign-left,
+table td.halign-left {
+  text-align: left;
+}
+
+table th.halign-right,
+table td.halign-right {
+  text-align: right;
+}
+
+table th.halign-center,
+table td.halign-center {
+  text-align: center;
+}
+
+table th.valign-top,
+table td.valign-top {
+  vertical-align: top;
+}
+
+table th.valign-bottom,
+table td.valign-bottom {
+  vertical-align: bottom;
+}
+
+table th.valign-middle,
+table td.valign-middle {
+  vertical-align: middle;
+}
+
+table.tableblock th,
+table.tableblock td {
+  padding: 6px 13px;
+  border: 1px solid var(--borderColor-default);
+  overflow-wrap: anywhere;
+}
+
+table.tableblock td {
+  vertical-align: top;
+}
+
+table.tableblock td > :last-child {
+  margin-bottom: 0;
+}
+
+table.tableblock tr {
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-color-muted);
+}
+
+table.tableblock tr:nth-child(2n) {
+  background-color: var(--table-row-color);
+}
+
+table.tableblock img {
+  background-color: transparent;
+}
+
+table.tableblock p {
+  margin: 0;
+}
+
+.exampleblock.grid > .content {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.exampleblock.col > .content {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: unset;
+}
+
+.exampleblock.grid > .content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1em;
+}
+
+.exampleblock.grid.one-one > .content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.two-one > .content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.one-two > .content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.valign-center {
+  height: 95%;
+}
+
+.exampleblock.grid.valign-center > .content {
+  align-items: center;
+  height: 95%;
+}
+
+.exampleblock.col.valign-center {
+  height: 95%;
+  display: flex;
+  align-items: center;
+}
+
+.exampleblock.grid.quadchart > .content {
+  grid-template: 1fr 1fr / 1fr 1fr;
+  gap: 0;
+}
+
+.exampleblock.grid.quadchart > .content > .exampleblock.col > .content {
+  padding: var(--space-4);
+}
+
+.exampleblock.grid.quadchart > .content > .exampleblock.col:nth-child(2),
+.exampleblock.grid.quadchart > .content > .exampleblock.col:nth-child(3) {
+  background: var(--table-row-color);
+}
+
+.mermaid-container {
+  break-inside: avoid;
+  page-break-inside: avoid; /* older browsers */
+  -webkit-column-break-inside: avoid; /* Safari */
+}
+
+.agenda {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+  counter-reset: section;
+}
+
+.agenda h3 {
+  grid-column: span 2;
+}
+
+.agenda .paragraph {
+  counter-increment: section;
+  background: var(--bg-color-light);
+  border-radius: var(--radius-small, 8px);
+  font-size: 0.9375rem;
+  padding: var(--space-3);
+  position: relative;
+}
+
+.agenda .paragraph .title {
+  text-align: left;
+  display: block;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.agenda .paragraph p {
+  margin-top: 0;
+}
+
+.agenda .paragraph::before {
+  content: counter(section);
+  font-weight: bold;
+  background: var(--accent);
+  border-radius: var(--radius-small, 8px);
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  text-align: center;
+  line-height: 1.5rem;
+  font-size: 1rem;
+  margin-top: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+/* Stack fixed-ratio grids once the content column is too narrow for
+   readable columns. Container query, not viewport — see .doc-content. */
+@container (max-width: 32rem) {
+  .exampleblock.grid.one-one > .content,
+  .exampleblock.grid.two-one > .content,
+  .exampleblock.grid.one-two > .content,
+  .agenda {
+    grid-template-columns: 1fr;
+  }
+
+  .exampleblock.grid.quadchart > .content {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+}
+
+ol ol,
+ul ol {
+  list-style-type: lower-roman;
+}
+
+ul ul ol, 
+ul ol ol, 
+ol ul ol, 
+ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.exampleblock .title,
+.listingblock .title,
+table caption {
+  font-style: italic;
+  text-align: center;
+}
+
+pre {
+  margin-top: 0;
+}
+
+*:not(pre) > code, tt {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #fcf7f2;
+  border: 1px solid #d1d9e0b3;
+  border-radius: 6px;
+}
+
+ul.checklist {
+  list-style-type: none;
+  padding-left: 0.6rem;
+}
+
+table {
+  margin-bottom: var(--space-4);
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  padding: 0;
+  margin-top: var(--space-4);
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+dl dd {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+dd p {
+  margin-top: 0;
+}
+
+dd {
+  margin-left: 0;
+}
+
+.quoteblock {
+  margin: var(--space-6);
+  padding: 0 1em;
+  border-left: 0.25em solid #3c071266;
+}
+
+.quoteblock {
+  blockquote {
+    margin: var(--space-1);
+  }
+}
+
+.quoteblock {
+  & blockquote {
+    & p {
+      &:before {
+        transform: scale(-1, 1);
+      }
+      &:first-child:before, &:last-child:after {
+        content: "";
+        color: var(--accent);
+        font-family: 'Phosphor';
+        display: inline-block;
+        padding-left: 0.5em;
+      }
+    }
+  }
+}
+
+.quoteblock {
+  & > .attribution {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    text-align: right;
+  }
+}
+
+.exampleblock {
+  & > .content {
+    border: 0.1em solid var(--bg-color-intense);
+    border-radius: 12px;
+    padding: 0.25em 0.75em;
+    margin-bottom: 1em;
+  }
+}
+
+kbd {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: var(--text-main);
+  background: var(--bg-color-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 0.1em var(--bg-main) inset;
+  padding: 0.1em 0.45em;
+  margin: 0 0.15em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.05em;
+  white-space: nowrap;
+}
+
+.keyseq kbd:first-child { margin-left: 0; }
+.keyseq kbd:last-child  { margin-right: 0; }
+
+b.button {
+  display: inline-block;
+  background-color: var(--bg-color-intense);
+  color: white;
+  border-radius: 5em;
+  font-weight: normal;
+  font-size: 0.889em;
+  padding: 0.05em 0.5em 0.2em;
+  margin: 0 0.25em;
+  vertical-align: baseline;
+}
+
+.menuseq {
+  color: var(--menu-color, var(--bg-color-intense));
+  font-weight: bold;
+  padding: 0 0.25em;
+}
+
+.menuseq .caret {
+  color: var(--text-muted);
+  font-style: normal;
+  font-weight: normal;
+  padding: 0 0.15em;
+}
+
+[data-theme="dark"] {
+  --menu-color: var(--rule-color);
+}
+
+/* ---------- [ Icons ] ---------- */
+.ph {
+    display: inline-block;
+}
+.ph.size-1x {
+    font-size: 1em;
+}
+.ph.size-2x {
+    font-size: 2em;
+}
+.ph.size-3x {
+    font-size: 3em;
+}
+.ph.size-4x {
+    font-size: 4em;
+}
+.ph.size-5x {
+    font-size: 5em;
+}
+.ph.size-lg {
+    font-size: 6em;
+}
+.ph.size-fw {
+    font-size: 1em;
+} /* FIXME - Fixed width */
+
+.ph.flip-horizontal {
+    transform: scaleX(-1);
+}
+.ph.flip-vertical {
+    transform: scaleY(-1);
+}
+
+.ph.rotate-90 {
+    transform: rotate(90deg);
+}
+.ph.rotate-180 {
+    transform: rotate(180deg);
+}
+.ph.rotate-270 {
+    transform: rotate(270deg);
+}
+
+.accent {
+    color: var(--fgColor-accent);
+}
+.success {
+    color: var(--fgColor-success);
+}
+.attention {
+    color: var(--fgColor-attention);
+}
+.danger {
+    color: var(--fgColor-danger);
+}
+.done {
+    color: var(--fgColor-done);
+}
+
+/* Styles for AI prompt boxes */
+
+.openblock.prompt {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;              /* take full row width so next block wraps below */
+  clear: both;
+  margin-top: 10px;
+}
+
+.openblock.prompt::before {
+  content: "";
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-color-prompt);
+
+  /* Robot icon from Phosphor as an inline SVG data URI */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='none'%3E%3Ccircle cx='128' cy='96' r='64' stroke='%23888' stroke-width='16'/%3E%3Cpath d='M32 216c0-52.9 43.1-96 96-96s96 43.1 96 96' stroke='%23888' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  display: block;
+  align-self: flex-end;
+}
+
+.openblock.prompt .content {
+  background: var(--bg-color-prompt-bubble);
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  margin-left: 5px;
+}
+
+.openblock.prompt .content p {
+  margin: 0;
+}
+
+.openblock.prompt-response {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;              /* take full row width so next block wraps below */
+  clear: both;
+  margin-top: 10px;
+}
+
+.openblock.prompt-response::before {
+  content: "";
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-color-prompt);
+
+  /* Person icon from Phosphor as an inline SVG data URI */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%23888'%3E%3Crect width='256' height='256' fill='none'/%3E%3Crect x='64' y='96' width='128' height='96' rx='8' fill='none' stroke='%23888' stroke-width='16'/%3E%3Cpath d='M160,96V88a32,32,0,0,0-64,0v8' fill='none' stroke='%23888' stroke-width='16'/%3E%3Ccircle cx='104' cy='144' r='8' fill='%23888'/%3E%3Ccircle cx='152' cy='144' r='8' fill='%23888'/%3E%3Cline x1='148' y1='192' x2='148' y2='216' stroke='%23888' stroke-width='16'/%3E%3Cline x1='108' y1='192' x2='108' y2='216' stroke='%23888' stroke-width='16'/%3E%3Cline x1='192' y1='120' x2='216' y2='120' stroke='%23888' stroke-width='16'/%3E%3Cline x1='40' y1='120' x2='64' y2='120' stroke='%23888' stroke-width='16'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  display: block;
+  align-self: flex-end;
+}
+
+.openblock.prompt-response .content {
+  background: var(--bg-color-prompt);
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  margin-left: 5px;
+}
+
+.openblock.prompt .content p,
+.openblock.prompt-response .content p {
+  margin: 0;
+}
+
+.openblock.prompt .content .paragraph + .paragraph,
+.openblock.prompt-response .content .paragraph + .paragraph {
+  margin-top: 1em;
+}
+html {
+  /* This ensures the page stops scrolling before the title hits the top */
+  scroll-padding-top: calc(var(--header-height) + 20px); 
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s, color 0.3s;
+  line-height: 1.35;
+  font-kerning: normal;
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  text-rendering: optimizeLegibility;
+}
+
+/* Standardized vertical rhythm — non-heading blocks share a bottom
+   margin of --space-4 (16 px). Headings get a larger bottom margin
+   (--space-6, 32 px) so heading → content reads as a clear break. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+nav h2 {
+  margin-top: 0;
+}
+
+p, ul, ol, dl, pre, table, blockquote, figure,
+.imageblock, .listingblock, .literalblock, .openblock,
+.exampleblock, .sidebarblock, .admonitionblock, .quoteblock {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+h3 {
+  font-size: var(--font-size-title-lg);
+}
+
+h4 {
+  font-size: var(--font-size-title-md);
+}
+
+h5 {
+  font-size: var(--font-size-title-sm);
+}
+
+/* Fixed Header */
+body > header {
+  height: var(--header-height);
+  background-color: var(--bg-color-muted);
+  color: var(--header-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.container {
+  display: flex;
+  margin-top: var(--header-height);
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* Sticky Fixed Sidebar */
+aside {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+  flex-shrink: 0;
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: var(--space-6) var(--space-5);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Content & Image Scaling */
+main {
+  flex-grow: 1;
+  min-width: 0; /* Prevents layout break from code/images */
+  padding: var(--space-6) 4rem;
+}
+
+.doc-content {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.doc-content .content-header {
+  background-color: var(--bg-color-intense);
+  color: white;
+  padding-top: var(--space-6);
+  padding-right: var(--space-8);
+  padding-bottom: 6rem;
+  padding-left: var(--space-8);
+  border-radius: 10px;
+}
+
+.doc-content .content-header .content-sub-title {
+  font-size: 1.875rem;
+  margin-bottom: 0;
+}
+
+.doc-content .content-header .content-title {
+  font-size: 4rem;
+  line-height: 105%;
+  margin-top: 0;
+}
+
+.doc-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-5) 0;
+  border-radius: 6px;
+}
+
+.doc-content pre {
+  background-color: var(--code-bg);
+  padding: 5px;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+}
+
+/* TOC Styling */
+.toc-wrapper {
+  flex: 1;
+}
+
+.toc-wrapper h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.toc-wrapper ul { 
+  list-style: none; padding: 0; margin: 0; 
+}
+.toc-wrapper li { 
+  margin-bottom: 0.6rem; 
+}
+.toc-wrapper a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    position: relative; /* Added to anchor the pseudo-element */
+    display: flex;      /* Ensures the flex layout for icon placement */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    padding-right: 5px;
+    transition: color 0.2s ease;
+}
+
+.toc-wrapper a.active {
+    color: var(--link-color);
+    font-weight: 700;
+}
+
+.toc-wrapper a.active::before {
+  content: "";
+  position: absolute;
+  left: -12px; /* Positions the bar to the left of the text without pushing it */
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--link-color);
+  border-radius: 2px;
+}
+
+.toc-wrapper a span:first-child {
+  flex: 1;
+  overflow-wrap: break-word; /* Allows long words to break if necessary */
+  line-height: 1.2;
+}
+
+.sectlevel2 a.active::before {
+    left: -15px; /* Adjust as needed for nested indentation */
+}
+
+.toc-wrapper li {
+  margin-bottom: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.toc-wrapper .sectlevel1 > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.toc-wrapper .sectlevel1 > li > a.active-parent::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--link-color);
+    border-radius: 2px;
+}
+
+.toc-wrapper a.active-parent {
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* Hide sub-levels by default */
+.toc-wrapper .sectlevel2 {
+  display: none;
+  padding-left: var(--space-5);
+  padding-top: var(--space-2);
+}
+
+/* Class to show the sub-level */
+.toc-wrapper .sectlevel2.is-visible {
+  display: block;
+}
+
+/* Styling for the expand icon */
+.toc-plus-icon {
+  flex-shrink: 0; /* Prevents the icon from being compressed by long text */
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover color for the arrow */
+.toc-wrapper a:hover .toc-plus-icon {
+  border-color: var(--link-color);
+}
+
+/* Rotate the arrow to point down when expanded */
+.toc-wrapper .is-expanded > a .toc-plus-icon {
+  transform: rotate(45deg);
+  border-color: var(--link-color);
+}
+
+#theme-toggle {
+  cursor: pointer;
+  padding: 6px 12px;
+  color: var(--header-color);
+  background: none;
+  border: 0;
+  font-size: 0.8rem;
+}
+
+.sun-icon { display: none; }
+.moon-icon { display: block; }
+
+[data-theme="dark"] .sun-icon { display: block; }
+[data-theme="dark"] .moon-icon { display: none; }
+
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  aside {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  main { padding: var(--space-6); }
+}
+
+.header-logo {
+  /* Dimensions for the logo */
+  width: 160px;
+  height: 40px;
+  margin-right: 15px;
+
+  /* Use the logo variable as a mask */
+  -webkit-mask-image: var(--theme-logo);
+  mask-image: var(--theme-logo);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  /* This forces the logo to match the header text color */
+  background-color: var(--header-color);
+  
+  /* Vertical alignment within the flex header */
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.sect1 > header {
+  background: var(--bg-color-light);
+  border-radius: 10px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  padding-right: var(--space-8);
+  padding-bottom: var(--space-6);
+  padding-left: var(--space-8);
+}
+
+.sect1 > header > h2 {
+  font-size: 3.25rem;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.sect1 > header > p {
+  margin-top: 0;
+  font-weight: bolder;
+  font-size: 1.375rem;
+}
+
+.objectives li {
+  margin-bottom: var(--space-3);
+}
+
+.objectives li:last-child {
+  margin-bottom: 0;
+}
+
+.objectives li p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.objectives ul {
+  list-style: none;
+  padding-left: var(--space-5);
+}
+
+.objectives li::before {
+  content: "\E182"; /* Phosphor check */
+  font-family: 'Phosphor';
+  font-weight: bold;
+  color: var(--accent);
+  display: inline-block;
+  width: 1.5em;
+  margin-left: -1.5em;
+}
+
+li > p {
+  margin: 0;
+}
+
+.openblock.details {
+  border-top: 1px solid var(--rule-color);
+}
+
+.openblock.notes {
+  border-top: 3px solid var(--rule-color);
+  border-bottom: 3px solid var(--rule-color);
+}
+
+.sidebar-footer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+}
+.hljs {
+  color: var(--code-color);
+  background: var(--code-bg);
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: var(--code-keyword);
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: var(--code-entity);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: var(--code-constant);
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: var(--code-string);
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: var(--code-variable);
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: var(--code-comment);
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: var(--code-entity-tag);
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: var(--code-storage-modifier-import);
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: var(--code-markup-heading);
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: var(--code-markup-list);
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: var(--code-markup-italic);
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: var(--code-markup-bold);
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: var(--code-markup-inserted);
+  background-color: var(--code-markup-inserted-bg);
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: var(--code-markup-deleted);
+  background-color: var(--code-markup-deleted-bg);
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  color: inherit;
+  border-left: 0.25em solid var(--borderColor-default);
+}
+
+.markdown-alert > :first-child {
+  margin-top: 0;
+}
+
+.markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--borderColor-accent-emphasis);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--fgColor-info);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--borderColor-done-emphasis);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--fgColor-done);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--borderColor-attention-emphasis);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--fgColor-attention);
+}
+
+.markdown-alert.markdown-alert-tip,
+.markdown-alert.markdown-alert-success {
+  border-left-color: var(--borderColor-success-emphasis);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title,
+.markdown-alert.markdown-alert-success .markdown-alert-title {
+  color: var(--fgColor-success);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--borderColor-danger-emphasis);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--fgColor-danger);
+}    
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo"></div>
+    <div style="flex: 1; font-weight: 600; font-size: 1.2rem;">WA3855-CAP Phase 1 Capstone Project for Leaders</div>
+    <button id="theme-toggle" aria-label="Toggle theme">
+      <svg class="moon-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path>
+      </svg>
+      <svg class="sun-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zM0 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 8zm13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zM1.11 1.11a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 1 1-.707.707L1.11 1.817a.5.5 0 0 1 0-.707zm11.778 11.778a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1-.707.707l-1.414-1.414a.5.5 0 0 1 0-.707zM1.817 14.89a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707.707l-1.414 1.414zm13.073-13.073a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"></path>
+      </svg>
+    </button>
+  </header>
+  <div class="container">
+    <aside>
+      <nav class="toc-wrapper">
+        <h2>Table of Contents</h2>
+        <ul class="sectlevel1">
+<li><a href="#_phase_1_capstone_lead_assemble_the_evergreen_quote_delivery">
+      <span>1. Phase 1 Capstone — Lead &amp; Assemble the Evergreen Quote Delivery</span>
+      <span class="toc-plus-icon"></span>
+    </a>
+<ul class="sectlevel2">
+<li><a href="#_who_you_are_this_week">1.1. Who You Are This Week</a></li>
+<li><a href="#_schedule_at_a_glance">1.2. Schedule at a Glance</a></li>
+<li><a href="#_before_you_start_environment_check">1.3. Before You Start — Environment Check</a></li>
+<li><a href="#_your_deliverables">1.4. Your Deliverables</a></li>
+<li><a href="#_day_1_mon_kickoff_planning_setup">1.5. Day 1 (Mon) — Kickoff, Planning &amp; Setup</a></li>
+<li><a href="#_day_2_tue_build_the_front_end_steer">1.6. Day 2 (Tue) — Build the Front End &amp; Steer</a></li>
+<li><a href="#_day_3_wed_wire_the_logic_oversee_quality_ai">1.7. Day 3 (Wed) — Wire the Logic, Oversee Quality &amp; AI</a></li>
+<li><a href="#_day_4_thu_integrate_finalize_rehearse">1.8. Day 4 (Thu) — Integrate, Finalize &amp; Rehearse</a></li>
+<li><a href="#_day_5_fri_delivery_review_lessons_learned">1.9. Day 5 (Fri) — Delivery Review &amp; Lessons Learned</a></li>
+<li><a href="#_edit_scope_reminders">1.10. Edit Scope Reminders</a></li>
+<li><a href="#_review">1.11. Review</a></li>
+</ul>
+</li>
+</ul>
+      </nav>
+      <div class="sidebar-footer">
+        1.0.1
+      </div>
+    </aside>
+    <main>
+      <article class="doc-content">
+        <div class="content-header">
+          <p class="content-sub-title">WA3855-CAP Lab Guide</p>
+          <h1 class="content-title">Phase 1 Capstone Project for Leaders</h1>
+        </div>
+        <div class="sect1">
+<header><h2 id="_phase_1_capstone_lead_assemble_the_evergreen_quote_delivery">Phase 1 Capstone — Lead &amp; Assemble the Evergreen Quote Delivery</h2><p>Lab 1</p></header>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this capstone, you will spend four days as the <strong>Delivery Lead</strong> for <strong>Evergreen Insurance Quote</strong> — a small web app of the kind the engineer track builds. You start from a <strong>starter project</strong> provided in your lab kit (a basic HTML page) and, over the week, <strong>expand</strong> it into a working Evergreen Quote app by assembling the provided pieces. You will lead a simulated four-day delivery week while you do it. On Friday you will present what your team delivered, run a lessons-learned review, and assess your peers.</p>
+</div>
+<div class="paragraph">
+<p>You will not write code from scratch. Every coding step in this capstone is an <strong>assembly</strong> step: push the starter to your own repo, branch, drop in a provided partial, configure a class, wire a provided function, enable a workflow, open a PR. The skill being practiced is <strong>leading delivery</strong> — not authoring software.</p>
+</div>
+<div class="paragraph">
+<p><strong>Writing code is never required to complete this capstone.</strong> But if you want to get hands-on, several assembly blocks include a short, clearly-marked <strong>optional challenge</strong> — a small, self-contained change you can try. Across the week these cover adding a nav link (HTML), recoloring the brand (CSS), adding a coverage type (JavaScript), and adding a CI step (YAML). They are entirely optional; skipping them costs you nothing and does not affect completion.</p>
+</div>
+<div class="markdown-alert markdown-alert-success">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-lightbulb"></i>&nbsp;Tip
+      </p>
+      <p>This capstone is the culmination of every Phase 1 topic — command line, Git, GitHub, HTML, CSS, Flexbox/Bootstrap, JavaScript, and CI/CD. You will touch each one as a leader, not as an engineer.</p>
+    </div>
+<div class="sect2">
+<h3 id="_who_you_are_this_week">1.1. Who You Are This Week</h3>
+<div class="paragraph">
+<p>You are the Delivery Lead for <strong>Evergreen Insurance Quote</strong>. You begin with a <strong>starter project</strong> in your lab kit — a basic HTML page that <strong>represents</strong> where an engineering team would hand off. You are not managing a roomful of peers. You are leading a delivery effort on a product — and getting hands-on by <strong>expanding that starter</strong>, assembling the provided pieces into a working app, not by writing code from scratch. Expect to put pieces together as well as lead.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You may work <strong>solo</strong> or <strong>paired</strong> (team of two). Choose Monday morning.</p>
+</li>
+<li>
+<p>The instructor plays the <strong>project sponsor / stakeholder</strong> — bring questions to them when a real PM would.</p>
+</li>
+<li>
+<p>The cohort runs team meetings (daily check-in, planning, review, lessons-learned) <strong>together</strong>, with a different learner leading each day.</p>
+</li>
+</ul>
+</div>
+<div class="markdown-alert markdown-alert-note">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-info"></i>&nbsp;Note
+      </p>
+      <p>"Assembly, not authoring." If you ever feel you need to write a function or hand-craft CSS, stop — the piece you need is already in your starter kit under <code>files/</code>.</p>
+    </div>
+</div>
+<div class="sect2">
+<h3 id="_schedule_at_a_glance">1.2. Schedule at a Glance</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 57.1429%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Day</th>
+<th class="tableblock halign-left valign-top">When</th>
+<th class="tableblock halign-left valign-top">What</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Mon</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10:00–17:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day 1 — Kickoff, vision, task list, environment setup.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Tue</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10:00–17:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day 2 — Front-end assembly + steering (Inject #1).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Wed</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10:00–17:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day 3 — Wire the logic, enable CI, oversee AI use (Inject #2).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Thu</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10:00–17:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day 4 — Integrate, finalize, rehearse the delivery review.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Fri</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10:00–17:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delivery review presentations and lessons-learned review.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Each working day follows the same rhythm:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>10:00–10:15</strong> — Cohort daily check-in (rotating lead).</p>
+</li>
+<li>
+<p><strong>10:15–12:00</strong> — Working block.</p>
+</li>
+<li>
+<p><strong>12:00–13:00</strong> — Lunch.</p>
+</li>
+<li>
+<p><strong>13:00–15:30</strong> — Working block (an <strong>inject</strong> lands inside this block on Tue and Wed).</p>
+</li>
+<li>
+<p><strong>15:30–16:00</strong> — Mid-afternoon check-in with the instructor (in project sponsor role).</p>
+</li>
+<li>
+<p><strong>16:00–17:00</strong> — Wrap, commit, push, update status.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_before_you_start_environment_check">1.3. Before You Start — Environment Check</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open a terminal and confirm the tools you’ll use this week are installed:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git --version
+gh --version
+code --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All three should print a version. If any one fails, ask the instructor before proceeding.</p>
+</div>
+</li>
+<li>
+<p>Confirm the lab kit is on your VM:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">ls</span> ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see folders named <code>starter/</code>, <code>html-partials/</code>, <code>theme/</code>, <code>js-snippets/</code>, <code>workflows/</code>, and <code>templates/</code>, plus an empty <code>delivery-leadership-package/</code> scaffold. The first set are the <strong>provided pieces</strong> you will assemble from; <code>delivery-leadership-package/</code> is where your written leadership artifacts will go.</p>
+</div>
+</li>
+<li>
+<p>Confirm the <strong>starter project</strong> is present and runs on your VM. It is the engineering team’s baseline — the project you will lead and assemble onto this week:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">ls</span> ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/starter</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see <code>index.html</code>, <code>README.md</code>, and <code>CAPSTONE-BRIEF.md</code>. Open <code>starter/index.html</code> with Live Server (right-click → <strong>Open with Live Server</strong>) and confirm the placeholder Evergreen page loads in the browser. If it doesn’t, ask the instructor before proceeding.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_your_deliverables">1.4. Your Deliverables</h3>
+<div class="paragraph">
+<p>By Friday morning you will commit a <strong>delivery-leadership package</strong> to the root of your Evergreen Quote repository, plus a working assembled app. Everything is required unless marked <strong>(stretch)</strong>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 60%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">#</th>
+<th class="tableblock halign-left valign-top">Artifact</th>
+<th class="tableblock halign-left valign-top">Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Vision brief</strong> — what Evergreen Quote is, who it’s for, what "good" looks like this week.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/vision-brief.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Prioritized task list</strong> on a GitHub Project board — grouped tasks with clear done criteria.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GitHub Project (link pasted into the brief)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Delivery goal</strong> — one sentence the team could repeat back.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/delivery-goal.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Assembled, running, responsive Evergreen Quote app</strong> with the wired quote logic, merged to <code>main</code> via PR.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the repository itself</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Risk register</strong> — at least 5 risks with owner, likelihood, impact, mitigation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/risk-register.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>One decision memo</strong> — a real tradeoff you made this week, written for a non-technical reader.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/decision-memo.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>One stakeholder status update</strong> — what shipped, what slipped, what’s next.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/status-update.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>One go/no-go decision</strong> — based on the green/red CI run on Wednesday.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/go-no-go.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Delivery review presentation</strong> — 5 slides or 1 page. Delivered Friday.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delivery-leadership-package/delivery-review-outline.md</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>(stretch)</strong> Roadmap + a second decision memo + incident-comms write-up + a Copilot-assisted assembly step with your written critique.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">same folder</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Templates for items 1, 3, and 5–9 are in your starter kit under <code>templates/</code>. Copy them into <code>delivery-leadership-package/</code> and fill them in.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_day_1_mon_kickoff_planning_setup">1.5. Day 1 (Mon) — Kickoff, Planning &amp; Setup</h3>
+<div class="paragraph">
+<p>Goal for the day: by end of Monday, the cohort knows what Evergreen Quote is, you have a vision brief, a prioritized task list on a GitHub board, a delivery goal, and the repository running locally.</p>
+</div>
+<div class="sect3">
+<h4 id="_daily_check_in_1000">1.5.1. Daily Check-in — 10:00</h4>
+<div class="paragraph">
+<p>This is the first check-in, so it doubles as introductions. Today’s meeting lead (volunteer or assigned by the instructor) asks each learner the three classic questions, with a Day-1 twist:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What did you do <strong>before</strong> this week to prepare?</p>
+</li>
+<li>
+<p>What are you doing <strong>today</strong>?</p>
+</li>
+<li>
+<p>What is <strong>already</strong> blocking you (access, tooling, pairing decisions)?</p>
+</li>
+</ul>
+</div>
+<div class="markdown-alert markdown-alert-success">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-lightbulb"></i>&nbsp;Tip
+      </p>
+      <p>Daily check-ins should take 15 minutes for the whole cohort. If a topic needs more than a sentence, take it offline — say "let’s take that after the check-in."</p>
+    </div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_lead">1.5.2. Morning Block — Lead</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Read the engineering team’s work.</strong> Open the engineering capstone brief in your lab kit at <code>~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/starter/CAPSTONE-BRIEF.md</code>. You are not implementing it — you are leading a team that <strong>is</strong>. Skim the brief, the starter <code>README.md</code>, and the file structure. Form opinions: what’s the user value? what’s risky? what would you cut?</p>
+</li>
+<li>
+<p><strong>Draft your vision brief.</strong> Open <code>templates/vision-brief.md</code> from the kit and copy it into your own <code>delivery-leadership-package/vision-brief.md</code>. Fill it in. A vision brief answers four questions in one page:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Who is the customer?</strong></p>
+</li>
+<li>
+<p><strong>What pain does Evergreen Quote remove?</strong></p>
+</li>
+<li>
+<p><strong>What does "good" look like at end of the week?</strong></p>
+</li>
+<li>
+<p><strong>What are we explicitly <strong>not</strong> doing this week?</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Pair decision.</strong> By 11:30, tell the instructor whether you are working solo or paired, and (if paired) with whom.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_afternoon_block_assemble_environment_task_list">1.5.3. Afternoon Block — Assemble (Environment &amp; Task List)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Create your project repository on GitHub and push the starter.</strong> Copy the starter project out of your lab kit, add the empty <code>delivery-leadership-package/</code> scaffold for your written artifacts, put it all under version control, and push it to a new GitHub repo of your own. The <code>gh</code> CLI is pre-authenticated on your VM.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">cp</span> -r ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/starter ~/evergreen-quote-delivery
+<span class="hljs-built_in">cd</span> ~/evergreen-quote-delivery
+<span class="hljs-built_in">cp</span> -r ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/delivery-leadership-package .
+git init -b main
+git add .
+git commit -m <span class="hljs-string">"Initial commit: Evergreen Quote starter"</span>
+gh repo create evergreen-quote-delivery --private --<span class="hljs-built_in">source</span>=. --remote=origin --push
+code .</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Why this step:</strong> This repo on GitHub <strong>is</strong> your team’s work. From here on you are operating on it the way any delivery lead operates on a real team repo — through Git and GitHub, not by opening files manually.</p>
+</div>
+</li>
+<li>
+<p><strong>Run it once</strong> so you know it works on Day 1. Open <code>index.html</code> with Live Server (right-click → <strong>Open with Live Server</strong>). Confirm the page loads in the browser. If anything fails, <strong>that is your first risk</strong> — log it.</p>
+</li>
+<li>
+<p><strong>Create your delivery branch.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git checkout -b delivery/lead</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will assemble everything onto this branch and merge to <code>main</code> via PR on Day 4.</p>
+</div>
+</li>
+<li>
+<p><strong>Set up your GitHub Project board.</strong> In a browser, go to your <code>evergreen-quote-delivery</code> repo on github.com, click <strong>Projects → New project → Board</strong>. Create three columns: <strong>To Do</strong>, <strong>In Progress</strong>, <strong>Done</strong>.</p>
+</li>
+<li>
+<p><strong>Create your tasks as GitHub Issues</strong> and drop them on the board. Suggested starter set (you may add more):</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>[FE] Assemble homepage from provided partials</code></p>
+</li>
+<li>
+<p><code>[FE] Apply theme + make responsive</code></p>
+</li>
+<li>
+<p><code>[FE] Add testimonials section</code></p>
+</li>
+<li>
+<p><code>[LOGIC] Wire provided quote-calculation snippet</code></p>
+</li>
+<li>
+<p><code>[CI] Enable GitHub Actions workflow</code></p>
+</li>
+<li>
+<p><code>[REVIEW] Open PR from delivery/lead to main</code></p>
+<div class="paragraph">
+<p>Each issue needs <strong>done criteria</strong> — bullet points the work must satisfy to be "done."</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Write the delivery goal.</strong> Open <code>templates/delivery-goal.md</code>, copy to <code>delivery-leadership-package/delivery-goal.md</code>, and write one sentence the whole team could repeat back. Example shape: <em>"By Thursday EOD, an assembled, themed, responsive Evergreen Quote app with the wired quote calculator is merged to main via a reviewed PR with a green CI run."</em></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wrap_1600">1.5.4. Wrap — 16:00</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Commit and push your delivery-leadership package so far:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git add delivery-leadership-package/
+git commit -m <span class="hljs-string">"Day 1: vision, delivery goal, draft task list"</span>
+git push -u origin delivery/lead</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Mid-afternoon check-in with the instructor. Share your vision brief and delivery goal out loud. <strong>Expected feedback:</strong> the goal should pass the "can a stranger repeat it back?" test.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_day_2_tue_build_the_front_end_steer">1.6. Day 2 (Tue) — Build the Front End &amp; Steer</h3>
+<div class="paragraph">
+<p>Goal for the day: the page looks like Evergreen Quote, responds on mobile, and you have a roadmap + risk register + one decision memo on file. An inject lands after lunch and your day changes.</p>
+</div>
+<div class="sect3">
+<h4 id="_daily_check_in_1000_2">1.6.1. Daily Check-in — 10:00</h4>
+<div class="paragraph">
+<p>A new meeting lead runs the check-in today. Three questions: <strong>yesterday / today / blockers</strong>. Keep it to 15 minutes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_assemble_html">1.6.2. Morning Block — Assemble (HTML)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open the starter kit’s HTML partials.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">ls</span> ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/html-partials</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see <code>header.html</code>, <code>hero.html</code>, <code>quote-form.html</code>, <code>testimonials.html</code>, <code>footer.html</code>, and <code>index-skeleton.html</code>.</p>
+</div>
+</li>
+<li>
+<p><strong>Assemble <code>index.html</code>.</strong> Open <code>index-skeleton.html</code> from the kit — it is the page skeleton with comment markers like <code>&lt;!-- INSERT: header -→</code>. Copy it into your repo as <code>index.html</code> (overwriting). Then, for each marker, paste the contents of the matching partial in its place.</p>
+<div class="markdown-alert markdown-alert-note">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-info"></i>&nbsp;Note
+      </p>
+      <p>You are <strong>not</strong> writing HTML. You are pasting provided HTML in the right slots and saving.</p>
+    </div>
+</li>
+<li>
+<p><strong>Open it in Live Server</strong> and confirm all sections render: header, hero, quote form, testimonials, footer.</p>
+</li>
+</ol>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Optional challenge — add a nav link (no code experience needed)</div>
+<div class="content">
+<div class="paragraph">
+<p>Want to feel what your engineers do? Add an <strong>About</strong> link to the header.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In <code>index.html</code>, find the assembled navigation list — the <code>&lt;ul class="navbar-nav …​"&gt;</code> containing <code>Home</code>, <code>Coverage</code>, <code>Claims</code>, and <code>Contact</code>.</p>
+</li>
+<li>
+<p>Copy one <code>&lt;li class="nav-item"&gt;…​&lt;/li&gt;</code> line and paste it as a new line in the list.</p>
+</li>
+<li>
+<p>Change its text to <code>About</code> and its <code>href</code> to <code>#footer</code>.</p>
+</li>
+<li>
+<p>Reload in Live Server — your <strong>About</strong> link should appear in the nav and jump to the footer when clicked.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is optional. Skipping it costs you nothing.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_assemble_css_responsive">1.6.3. Morning Block — Assemble (CSS + Responsive)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Apply the provided theme.</strong> Copy <code>theme/theme.css</code> from the kit into your repo’s <code>css/</code> folder (create the folder if needed). In <code>index.html</code>, add a <code>&lt;link&gt;</code> tag pointing to <code>css/theme.css</code> <strong>after</strong> any existing stylesheet link.</p>
+</li>
+<li>
+<p><strong>Apply provided Bootstrap classes</strong> in your HTML partials where marked <code>&lt;!-- CONFIG: add bootstrap class here -→</code>. The kit’s README lists which class to use where — you are configuring, not authoring CSS.</p>
+</li>
+<li>
+<p><strong>Resize the browser</strong> to phone width (≈375px). The page should reflow without horizontal scroll. If it doesn’t, that’s an issue — log it.</p>
+</li>
+</ol>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. Optional challenge — rebrand the color (no code experience needed)</div>
+<div class="content">
+<div class="paragraph">
+<p>The whole theme is driven by a few CSS variables. Change one and watch the page shift.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>css/theme.css</code> and find <code>--evg-green: #0f5132;</code> near the top.</p>
+</li>
+<li>
+<p>Replace the hex value with a different color (try <code>#1565c0</code> for blue or <code>#6a1b9a</code> for purple).</p>
+</li>
+<li>
+<p>Reload — the hero, buttons, and result box all pick up your new color, because they reference that one variable.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Bonus:</strong> the file darkens the button on hover via <code>--evg-green-dark</code>. Change that value too and watch the hover shade follow.</p>
+</div>
+<div class="paragraph">
+<p>For this optional challenge only you may edit <code>theme.css</code>; otherwise leave it as provided.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_afternoon_block_lead">1.6.4. Afternoon Block — Lead</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Draft your risk register.</strong> Copy <code>templates/risk-register.md</code> into <code>delivery-leadership-package/</code>. Identify at least 5 risks. Each row needs <strong>owner</strong>, <strong>likelihood (L/M/H)</strong>, <strong>impact (L/M/H)</strong>, <strong>mitigation</strong>, <strong>trigger to escalate</strong>.</p>
+</li>
+<li>
+<p><strong>Draft your roadmap (stretch)</strong> — what would the next few delivery rounds look like if this product kept going?</p>
+</li>
+<li>
+<p><strong>Write one decision memo.</strong> Copy <code>templates/decision-memo.md</code>. Pick a real tradeoff you made today (e.g., <strong>which sections did you cut to hit the responsive goal? did you prioritize testimonials or the quote form?</strong>). Write it for a non-technical reader: <strong>context → options → recommendation → why</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inject_1_1400">1.6.5. Inject #1 — ~14:00</h4>
+<div class="paragraph">
+<p>The instructor will hand you a one-page <strong>Inject</strong> at about 14:00. You will not have seen it in advance — reacting to it cold is part of the exercise.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Re-prioritize.</strong> Move issues on your Project board to reflect the new reality. Log what dropped and why.</p>
+</li>
+<li>
+<p><strong>Write a stakeholder status update.</strong> Copy <code>templates/status-update.md</code>. Two paragraphs: what shipped, what slipped, what’s next, what you need.</p>
+</li>
+<li>
+<p><strong>Send it to the instructor</strong> (post in the cohort channel and tag them).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wrap_1600_2">1.6.6. Wrap — 16:00</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Commit and push:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git add .
+git commit -m <span class="hljs-string">"Day 2: assembled FE, themed, responsive; risk register; decision memo; inject #1 response"</span>
+git push</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Mid-afternoon check-in. The instructor will ask: <strong>did your status update name what you need from them, or just describe the problem?</strong> Iterate if needed.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_day_3_wed_wire_the_logic_oversee_quality_ai">1.7. Day 3 (Wed) — Wire the Logic, Oversee Quality &amp; AI</h3>
+<div class="paragraph">
+<p>Goal for the day: the <strong>Calculate Premium</strong> button on your assembled page returns a real number from the provided quote-calculation snippet, the GitHub Actions CI workflow is enabled and producing a result on every push, you have used Copilot for one assembly step and written a one-paragraph critique of its output, and you have made a documented <strong>go/no-go</strong> call based on the CI result. Inject #2 lands in the afternoon.</p>
+</div>
+<div class="sect3">
+<h4 id="_daily_check_in_1000_3">1.7.1. Daily Check-in — 10:00</h4>
+<div class="paragraph">
+<p>New meeting lead. Same three questions. Today emphasize <strong>blockers</strong> — Day 3 is when reality bites.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_assemble_javascript">1.7.2. Morning Block — Assemble (JavaScript)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Locate the provided snippet.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">cat</span> ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/js-snippets/quote-calc.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This file defines a <code>calculatePremium(coverageType, coverageAmount)</code> function. You will <strong>wire it up</strong> — you will not modify it.</p>
+</div>
+</li>
+<li>
+<p><strong>Drop the snippet into your repo</strong> as <code>js/quote-calc.js</code> (create the <code>js/</code> folder if needed).</p>
+</li>
+<li>
+<p><strong>Wire it.</strong> In <code>index.html</code>, before <code>&lt;/body&gt;</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>&lt;script src="js/quote-calc.js"&gt;&lt;/script&gt;</code></p>
+</li>
+<li>
+<p>Add a second <code>&lt;script&gt;</code> block (also provided in the kit’s README) that listens to the form’s <code>submit</code> event, reads the inputs, calls <code>calculatePremium(…​)</code>, and writes the result into the <code>#premium-value</code> element.</p>
+<div class="markdown-alert markdown-alert-note">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-info"></i>&nbsp;Note
+      </p>
+      <p>The kit’s README has the exact wiring snippet to paste. You are not writing the event handler — you are pasting it in the right place.</p>
+    </div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Configure values.</strong> The snippet has a <code>ratePerThousand</code> object at the top. The instructor will tell you Monday’s "project sponsor" rate decision. <strong>Update only the values</strong> to match — do not refactor the function.</p>
+</li>
+<li>
+<p><strong>Test it.</strong> Reload in Live Server. Submit the form. A dollar amount should appear.</p>
+</li>
+</ol>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. Optional challenge — add a coverage type (a little JavaScript + HTML)</div>
+<div class="content">
+<div class="paragraph">
+<p>Add a <strong>Condo</strong> coverage option end-to-end.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In <code>js/quote-calc.js</code>, add one line to the <code>ratePerThousand</code> object: <code>condo: 0.7,</code></p>
+</li>
+<li>
+<p>In <code>index.html</code>, find the coverage <code>&lt;select id="coverageType"&gt;</code> and add a new option: <code>&lt;option value="condo"&gt;Condo&lt;/option&gt;</code></p>
+</li>
+<li>
+<p>Reload, choose <strong>Condo</strong>, set an amount, and submit — you should get a premium for the new type.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You changed the data and the form; the provided function handled the rest. Optional, but satisfying.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_assemble_cicd">1.7.3. Morning Block — Assemble (CI/CD)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Enable the workflow.</strong> Copy <code>workflows/ci.yml</code> from the kit into <code>.github/workflows/ci.yml</code> in your repo. Commit and push:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">mkdir</span> -p .github/workflows
+<span class="hljs-built_in">cp</span> ~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/workflows/ci.yml .github/workflows/
+git add .github/workflows/ci.yml
+git commit -m <span class="hljs-string">"Enable CI workflow"</span>
+git push</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Observe the run.</strong> In a browser, open your repo → <strong>Actions</strong> tab. A run should appear within ~30 seconds. Watch it complete. <strong>Read the result.</strong> If it’s red, read the logs and identify in plain English what failed — you are not fixing it as code; you are <strong>reading</strong> it as a leader.</p>
+</li>
+</ol>
+</div>
+<div class="exampleblock">
+<div class="title">Example 4. Optional challenge — add a CI step (a little YAML)</div>
+<div class="content">
+<div class="paragraph">
+<p>Add your own step to the pipeline.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>.github/workflows/ci.yml</code> and find the <code>steps:</code> list.</p>
+</li>
+<li>
+<p>Add a new step at the end, matching the existing indentation:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml hljs">      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Greeting</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">echo</span> <span class="hljs-string">"Evergreen Quote CI run by $<span class="hljs-template-variable">{{ github.actor }}</span>"</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Commit and push, then open the <strong>Actions</strong> tab and expand your <strong>Greeting</strong> step to read the message in the log.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You just edited a real CI pipeline. Optional — the provided workflow already passes without it.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_afternoon_block_lead_ai_tie_in">1.7.4. Afternoon Block — Lead (AI tie-in)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Use GitHub Copilot for one assembly step.</strong> Open VS Code, enable Copilot if it’s not already on, and ask it for help with one small thing — for example, "suggest two more testimonials matching the tone of the existing ones."</p>
+</li>
+<li>
+<p><strong>Critique what it gives you.</strong> In one paragraph (~100 words), in your decision memo or as a stretch artifact, answer: <strong>what did Copilot get right? what did it get wrong? would you ship its output as-is? what would you change?</strong></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inject_2_1400">1.7.5. Inject #2 — ~14:00</h4>
+<div class="paragraph">
+<p>The instructor will hand you a second inject at about 14:00 — typically a production incident scenario (the calculator returns a wrong premium, or CI on <code>main</code> has gone red after a merge, or a security flag from a dependency). As with the first, you will not have seen it in advance.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Respond as a leader, not a fixer.</strong> Your job is to <strong>route the question, not answer it.</strong> Draft a one-paragraph message that:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Names what you observed.</p>
+</li>
+<li>
+<p>Names what you’re asking for.</p>
+</li>
+<li>
+<p>Names who owns the next step.</p>
+</li>
+<li>
+<p>Offers air cover where appropriate.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Make a go/no-go call.</strong> Copy <code>templates/go-no-go.md</code>. Based on the latest CI run plus the inject, decide: <strong>do we keep merging today, or do we hold?</strong> Write the decision, your reasoning, and what would change your mind.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wrap_1600_3">1.7.6. Wrap — 16:00</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Commit, push, and check the CI result one more time:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git add .
+git commit -m <span class="hljs-string">"Day 3: wired calc; CI enabled; inject #2 response; go/no-go"</span>
+git push</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Mid-afternoon check-in. The instructor will ask: <strong>if you said no-go, what changed by tomorrow morning would flip it to go?</strong></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_day_4_thu_integrate_finalize_rehearse">1.8. Day 4 (Thu) — Integrate, Finalize &amp; Rehearse</h3>
+<div class="paragraph">
+<p>Goal for the day: open the PR from <code>delivery/lead</code> into <code>main</code>, self-review and merge it, confirm the app still works end-to-end on <code>main</code>, build the delivery review presentation, and dry-run it once.</p>
+</div>
+<div class="sect3">
+<h4 id="_daily_check_in_1000_4">1.8.1. Daily Check-in — 10:00</h4>
+<div class="paragraph">
+<p>New meeting lead. Today add a fourth question: <strong>what do you still need from anyone in the room before Friday?</strong></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_morning_block_assemble_pr_review">1.8.2. Morning Block — Assemble (PR &amp; Review)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open a pull request</strong> from <code>delivery/lead</code> into <code>main</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">gh <span class="hljs-built_in">pr</span> create --base main --<span class="hljs-built_in">head</span> delivery/lead \
+  --title <span class="hljs-string">"Evergreen Quote — assembled, themed, wired"</span> \
+  --body <span class="hljs-string">"See delivery-leadership-package/ for the full delivery output."</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(You can also open the PR in the GitHub UI if you prefer.)</p>
+</div>
+</li>
+<li>
+<p><strong>Self-review the diff</strong> in the <strong>Files changed</strong> tab. Read it the way you would read a teammate’s PR. Leave at least one inline comment that asks a question rather than commands a change.</p>
+</li>
+<li>
+<p><strong>(Pairs only)</strong> Have your pair leave one inline comment and approve.</p>
+</li>
+<li>
+<p><strong>Watch CI run on the PR.</strong> It must be green to merge. If it is red, <strong>read the logs out loud to your pair (or to yourself)</strong> and decide what to do — the answer might be "ask the engineering team," not "fix it myself."</p>
+</li>
+<li>
+<p><strong>Merge the PR.</strong> Use the <strong>Squash and merge</strong> option. Delete the branch.</p>
+</li>
+<li>
+<p><strong>Re-verify.</strong> Pull <code>main</code> locally and open the page in Live Server one more time. Confirm everything still works after the merge.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_afternoon_block_lead_consolidate_rehearse">1.8.3. Afternoon Block — Lead (Consolidate &amp; Rehearse)</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Consolidate the delivery-leadership package.</strong> Make sure every required deliverable from the table at the top is present, filled in, and committed to <code>main</code>.</p>
+</li>
+<li>
+<p><strong>Build the delivery review presentation.</strong> Copy <code>templates/delivery-review-outline.md</code> to <code>delivery-leadership-package/delivery-review-outline.md</code>. Five slides (or one tight page):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Slide 1 — <strong>Delivery goal &amp; whether we hit it.</strong></p>
+</li>
+<li>
+<p>Slide 2 — <strong>What shipped (demo screenshot of the assembled app).</strong></p>
+</li>
+<li>
+<p>Slide 3 — <strong>Two key decisions you made and why.</strong></p>
+</li>
+<li>
+<p>Slide 4 — <strong>Risks and how you handled the injects.</strong></p>
+</li>
+<li>
+<p>Slide 5 — <strong>What I’d do differently next round.</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Dry-run it once</strong> — out loud, to your pair or to yourself. Time it. Target 5 minutes.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wrap_1600_4">1.8.4. Wrap — 16:00</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Commit and push every remaining artifact:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">git add .
+git commit -m <span class="hljs-string">"Day 4: PR merged; delivery review presentation; package complete"</span>
+git push</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Confirm with the instructor: presentation slot booked for Friday, you know which order you’re presenting in.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_day_5_fri_delivery_review_lessons_learned">1.9. Day 5 (Fri) — Delivery Review &amp; Lessons Learned</h3>
+<div class="paragraph">
+<p>Goal for the day: present your delivery, watch your peers present, and run a cohort lessons-learned review.</p>
+</div>
+<div class="sect3">
+<h4 id="_delivery_reviews_1000_to_1300">1.9.1. Delivery Reviews — 10:00 to ~13:00</h4>
+<div class="paragraph">
+<p>Each learner (or pair) presents <strong>5 minutes max</strong>, followed by <strong>3 minutes of questions</strong> from "stakeholders" (instructors and peers). Your job during others' presentations is to be a respectful, curious stakeholder — not a competitor.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_lunch_1300">1.9.2. Lunch — 13:00</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_lessons_learned_review_1400">1.9.3. Lessons-Learned Review — 14:00</h4>
+<div class="paragraph">
+<p>Cohort lessons-learned review using the <strong>went well / didn’t / change</strong> format. Each learner contributes at least one item to each column. The instructor leads today.</p>
+</div>
+<div class="paragraph">
+<p>Then, in 10 minutes of quiet writing, each learner answers in their own notes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What surprised me about leading delivery this week?</p>
+</li>
+<li>
+<p>What habit do I want to take into Monday at work?</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_debrief_1630">1.9.4. Debrief — 16:30</h4>
+<div class="paragraph">
+<p>Instructor wraps the week tying back to the Phase 1 topic-to-activity map: <strong>every topic you saw in Phase 1 was something you used this week as a leader.</strong> Foreshadow Phase 2.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_edit_scope_reminders">1.10. Edit Scope Reminders</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>You are <strong>assembling</strong>, not authoring. Completing this capstone never requires writing code — if an assembly step feels like it needs a new function or hand-crafted CSS, stop and ask the instructor where the provided piece is.</p>
+</li>
+<li>
+<p><strong>Optional challenges are the one exception.</strong> The blocks marked "Optional challenge" invite you to make a small change yourself (including lightly editing <code>theme.css</code>, <code>quote-calc.js</code>, or <code>ci.yml</code>). They are clearly labeled, entirely optional, and never required to finish.</p>
+</li>
+<li>
+<p>The <strong>starter project</strong> in your lab kit is the <strong>engineering team’s work</strong>. Read it, lead around it, and assemble onto it; don’t refactor it.</p>
+</li>
+<li>
+<p>Your starter kit at <code>~/LabFiles/wa3855-cap-phase-1-capstone-project-leaders/</code> is the source of every provided piece. If a step says "use the provided X," X is in there.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review">1.11. Review</h3>
+<div class="paragraph">
+<p>In this capstone, you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Led a 4-day delivery week as Delivery Lead on a represented engineering team.</p>
+</li>
+<li>
+<p>Wrote a vision brief, delivery goal, risk register, decision memo, status update, go/no-go, and delivery review presentation.</p>
+</li>
+<li>
+<p>Assembled — without authoring — a themed, responsive Evergreen Quote app with a wired quote calculator, merged to <code>main</code> via a reviewed PR with a green CI run.</p>
+</li>
+<li>
+<p>Ran daily check-ins and team meetings at the cohort level.</p>
+</li>
+<li>
+<p>Responded to two injects in writing, under time pressure, as a leader.</p>
+</li>
+<li>
+<p>Used GitHub Copilot for one assembly step and <strong>critiqued</strong> its output rather than accepting it.</p>
+</li>
+<li>
+<p>Presented your delivery, ran a lessons-learned review, and assessed your peers.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You were never required to write application code. You have done the work that turns a team’s code into a <strong>delivery</strong> — and if you took on any of the optional challenges, you also got a taste of the hands-on work itself.</p>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+  
+const setTheme = (theme) => {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  }
+};
+
+// Check for saved theme or system preference on load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  setTheme('dark');
+}
+
+toggleBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.hasAttribute('data-theme');
+  setTheme(isDark ? 'light' : 'dark');
+});
+
+// TOC Highlight and ScrollSpy Logic
+const tocLinks = document.querySelectorAll('.toc-wrapper a');
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const sidebar = document.querySelector('aside');
+
+const removeActiveClasses = () => {
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    link.classList.remove('active-parent');
+  });
+};
+
+const observerOptions = {
+  root: null,
+  rootMargin: '-10% 0px -75% 0px', 
+  threshold: 0
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      const activeLink = document.querySelector(`.toc-wrapper a[href="#${id}"]`);
+      
+      if (activeLink) {
+        removeActiveClasses();
+        activeLink.classList.add('active');
+
+        // Logic to highlight the Top-Level Parent
+        const parentList = activeLink.closest('.sectlevel2');
+        if (parentList) {
+            // If we are in a sub-menu, find the main link for this section
+            const topLevelLink = parentList.parentElement.querySelector(':scope > a');
+            if (topLevelLink) {
+                topLevelLink.classList.add('active-parent');
+            }
+        }
+        
+        // Ensure sidebar visibility
+        const linkRect = activeLink.getBoundingClientRect();
+        const sidebarRect = sidebar.getBoundingClientRect();
+        if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
+          activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+  });
+}, observerOptions);
+
+sections.forEach(section => observer.observe(section));
+
+// Collapsible TOC Logic with Arrow Animation
+const plusIcons = document.querySelectorAll('.toc-plus-icon');
+
+plusIcons.forEach(icon => {
+  icon.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const parentLi = icon.closest('li');
+    const subLevel = parentLi.querySelector('.sectlevel2');
+
+    if (subLevel) {
+      const isExpanded = subLevel.classList.contains('is-visible');
+      
+      if (isExpanded) {
+        subLevel.classList.remove('is-visible');
+        parentLi.classList.remove('is-expanded'); // Animates arrow back to right
+      } else {
+        subLevel.classList.add('is-visible');
+        parentLi.classList.add('is-expanded');    // Animates arrow to down
+      }
+    }
+  });
+});
+  </script>
+
+</body></html>

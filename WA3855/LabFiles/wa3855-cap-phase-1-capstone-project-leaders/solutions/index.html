@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evergreen Insurance — Get a Quote</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/theme.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+      <div class="container">
+        <a class="navbar-brand" href="#">Evergreen Insurance</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMain"
+          aria-controls="navMain"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Coverage</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Claims</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="hero py-5 text-center text-white bg-success">
+      <div class="container">
+        <h1 class="display-5 fw-bold">Coverage that grows with you</h1>
+        <p class="lead tagline">Get a personalized quote in under a minute.</p>
+      </div>
+    </section>
+
+    <section class="quote-form-section container py-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Get Your Quote</h2>
+
+          <form id="quote-form" class="quote-form row g-3">
+            <div class="col-md-6">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" id="fullName" class="form-control" placeholder="Jane Doe" required />
+            </div>
+
+            <div class="col-md-3">
+              <label for="zip" class="form-label">ZIP Code</label>
+              <input type="text" id="zip" class="form-control" placeholder="02101" maxlength="5" required />
+            </div>
+
+            <div class="col-md-3">
+              <label for="coverageType" class="form-label">Coverage Type</label>
+              <select id="coverageType" class="form-select" required>
+                <option value="">Select coverage</option>
+                <option value="auto">Auto</option>
+                <option value="home">Home</option>
+                <option value="renters">Renters</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label for="coverageAmount" class="form-label">
+                Coverage Amount: $<span id="coverageAmountDisplay">50000</span>
+              </label>
+              <input
+                type="range"
+                id="coverageAmount"
+                class="form-range"
+                min="10000"
+                max="500000"
+                step="10000"
+                value="50000"
+              />
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-success">Calculate Premium</button>
+            </div>
+          </form>
+
+          <div id="premium-box" class="premium-box mt-4" hidden>
+            <div class="premium-label text-muted">Estimated Monthly Premium</div>
+            <div class="premium-value display-6 fw-bold" id="premium-value">$0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials container py-5">
+      <h2 class="text-center mb-4">What our customers say</h2>
+      <div class="testimonial-row row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="card-text">"Switched in five minutes. Saved $40 a month."</p>
+              <footer class="blockquote-footer mt-2">M. Alvarez, Boston</footer>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="card-text">"The claim process was painless. Honestly surprised."</p>
+              <footer class="blockquote-footer mt-2">T. Nguyen, Quincy</footer>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <p class="card-text">"Renters coverage at a price I expected. No surprises."</p>
+              <footer class="blockquote-footer mt-2">J. O'Connor, Cambridge</footer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer py-3 text-center bg-dark text-light">
+    <p class="mb-0">&copy; 2026 Evergreen Insurance. For training purposes only.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="js/quote-calc.js"></script>
+  <script>
+    document.getElementById("quote-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var coverageType = document.getElementById("coverageType").value;
+      var coverageAmount = Number(document.getElementById("coverageAmount").value);
+      var premium = calculatePremium(coverageType, coverageAmount);
+      document.getElementById("premium-value").textContent = "$" + premium;
+      document.getElementById("premium-box").hidden = false;
+    });
+
+    var slider = document.getElementById("coverageAmount");
+    var display = document.getElementById("coverageAmountDisplay");
+    slider.addEventListener("input", function () { display.textContent = slider.value; });
+  </script>
+
+</body>
+</html>
