@@ -1,0 +1,2083 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Guide: WA3856 TypeScript, NPM, and Vite for Leaders</title>
+  <style>
+    @import url("https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css");
+
+:root {
+  --font-primary: system-ui, -apple-system, sans-serif;
+  --font-secondary: system-ui, -apple-system, sans-serif;
+
+  /* Brand accent — used for .objectives checkmark, etc. */
+  --accent: #ff6b00;
+
+  /* Decorative rule color — warm muted accent used for section
+     header underline, .notes / .details block borders. */
+  --rule-color: #ae9695;
+
+  --header-height: 64px;
+  --sidebar-width: 300px;
+  /* Fluid inline padding shared by the page hero and section headers. */
+  --header-padding-inline: clamp(var(--space-4), 5vw, var(--space-8));
+
+  /* Spacing scale — Tailwind-style 4px base. Numbers = step × 4px.
+     Use for all margin / padding / gap. Reserve em for spacing that
+     must scale with text (letter-spacing, etc.). */
+  --space-1:  0.25rem; /*   4px */
+  --space-2:  0.5rem;  /*   8px */
+  --space-3:  0.75rem; /*  12px */
+  --space-4:  1rem;    /*  16px */
+  --space-5:  1.5rem;  /*  24px */
+  --space-6:  2rem;    /*  32px */
+  --space-8:  3rem;    /*  48px */
+  --space-12: 5rem;    /*  80px */
+  --space-16: 8rem;    /* 128px */
+
+  --font-size-title-lg: 1.875rem;
+  --font-size-title-md: 1.375rem;
+  --font-size-title-sm: 1.1875rem;
+
+  /* Light Mode Variables */
+  --bg-main: #ffffff;
+  --bg-sidebar: white;
+  --header-color: black;
+  --text-main: #24292e;
+  --text-muted: #59636e;
+  --link-color: #0366d6;
+  --border-color: #e1e4e8;
+  --bg-color-light: #faf5ed;
+  --bg-color-muted: #f6ebdf;
+  --bg-color-intense: #5c1726;
+  --bg-color-prompt: #f0f0f0;
+  --bg-color-prompt-bubble: #ddedff;
+  --borderColor-default: #3c071266;
+  --borderColor-accent-emphasis: #0969da;
+  --fgColor-info: #0969da;
+  --borderColor-done-emphasis: #8250df;
+  --fgColor-done: #8250df;
+  --borderColor-attention-emphasis: #9a6700;
+  --fgColor-attention: #9a6700;
+  --borderColor-success-emphasis: #1a7f37;
+  --fgColor-success: #1a7f37;
+  --borderColor-danger-emphasis: #cf222e;
+  --fgColor-danger: #d1242f;
+  --table-row-color: #fff9f5;
+  --code-bg: #f8f8f8;
+  --code-color: #24292e;
+  --code-keyword: #d73a49;
+  --code-entity: #6f42c1;
+  --code-constant: #005cc5;
+  --code-string: #032f62;
+  --code-variable: #e36209;
+  --code-comment: #6a737d;
+  --code-entity-tag: #22863a;
+  --code-storage-modifier-import: #24292e;
+  --code-markup-heading: #005cc5;
+  --code-markup-list: #735c0f;
+  --code-markup-italic: #24292e;
+  --code-markup-bold: #24292e;
+  --code-markup-inserted: #22863a;
+  --code-markup-inserted-bg: #f0fff4;
+  --code-markup-deleted: #b31d28;
+  --code-markup-deleted-bg: #ffeef0;
+
+  --theme-logo: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22Layer_2%22%20version%3D%221.1%22%20viewBox%3D%220%200%203540.6%20826.8%22%3E%3Cdefs%3E%3Cstyle%3E.st0%7Bfill%3A%23fff%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Layer_1-2%22%3E%3Cpath%20d%3D%22M529.9%20468.3v126.2H492v-19.1c-12.5%2014.7-31.3%2022.8-54.5%2022.8-39%200-70.3-25.8-70.3-60.3s30.5-55.6%2077.3-55.6h44.9v-16.9c0-24.7-7.7-34.2-37.2-34.2s-38.3%209.2-39.4%2035.3h-40.5c5.1-37.5%2037.5-68.8%2081.7-68.8s75.8%2028.7%2075.8%2070.7Zm-40.5%2065.1v-20.2h-54.1c-17.3%200-25.4%206.6-25.4%2019.5V543c0%2015.5%2010.3%2022.5%2036.1%2022.5s43.4-9.6%2043.4-32ZM550.1%20535.6h42c1.5%2022.8%2011.4%2029.4%2042.3%2029.4s40.1-7%2040.1-21.7v-7.4c0-11.8-7.4-16.6-27.6-18.8l-32-2.9c-35.3-3.3-58.1-23.5-58.1-54.1s35-62.6%2075.8-62.6%2075.1%2023.9%2080.2%2061.8h-42.3c-.7-21.7-9.9-28.7-37.5-28.7s-35.7%206.2-35.7%2021v6.6c0%2011.4%207%2016.9%2024.7%2018.8l35.7%203.7c35.7%203.7%2057.8%2023.5%2057.8%2053.4s-35%2064-80.2%2064-80.6-25.4-85-62.6ZM730.8%20497.7c0-56.7%2039.4-100.1%2091.6-100.1s81%2032.4%2088.3%2078h-43.8c-2.2-31.3-14.3-42.3-45.3-42.3S776%20448%20776%20482.2v30.9c0%2034.6%2013.6%2049.7%2045.6%2049.7s43.1-11.8%2045.3-43.1h43.8c-7.4%2046-44.2%2078.4-88.3%2078.4s-91.6-43.4-91.6-100.5ZM973.6%20509.5v9.2c0%2032%2014.7%2045.3%2048.9%2045.3s42.3-8.8%2044.5-30.5h44.5c-11.8%2036.8-48.9%2064.8-88.7%2064.8S929%20558.5%20929%20500.8s39.8-103%2094.2-103%2089.1%2042.7%2089.1%2096.4v15.5H973.6Zm0-35.3v4.4h93.8v-4.4c0-30.5-12.1-43.1-44.2-43.1s-49.7%2012.9-49.7%2043.1ZM1310.3%20473.8v120.7h-41.6V471.6c0-26.1-12.9-37.9-42.3-37.9s-44.2%2012.1-44.2%2039.8v121.1h-41.6V401.4h38.6v28c14.7-20.2%2036.8-31.6%2062.2-31.6%2039.4%200%2068.8%2032%2068.8%2076.2ZM1515.3%20330.3v264.2h-39v-26.1c-13.2%2017.7-37.2%2029.8-59.6%2029.8-48.2%200-87.2-44.9-87.2-99.7s39.4-100.8%2088.7-100.8%2041.6%209.2%2055.6%2026.1v-93.5h41.6Zm-41.6%20152c0-34.2-15.1-48.9-49.7-48.9s-49.3%2014.7-49.3%2048.9v30.9c0%2034.6%2015.1%2049.7%2049.3%2049.7s49.7-15.1%2049.7-49.7v-30.9ZM1533.7%20351.2c0-16.9%2012.1-28.3%2029.1-28.3s28.7%2011.4%2028.7%2028.3-12.1%2028.3-28.7%2028.3-29.1-11.8-29.1-28.3Zm8.5%2050.1h41.6v193.2h-41.6V401.3ZM1651.8%20509.5v9.2c0%2032%2014.7%2045.3%2048.9%2045.3s42.3-8.8%2044.5-30.5h44.5c-11.8%2036.8-48.9%2064.8-88.7%2064.8s-93.8-39.8-93.8-97.5%2039.8-103%2094.2-103%2089.1%2042.7%2089.1%2096.4v15.5h-138.7Zm0-35.3v4.4h93.8v-4.4c0-30.5-12.1-43.1-44.2-43.1s-49.7%2012.9-49.7%2043.1ZM1981.5%20473.8v120.7h-41.6V471.6c0-26.1-12.9-37.9-42.3-37.9s-44.2%2012.1-44.2%2039.8v121.1h-41.6V401.4h38.6v28c14.7-20.2%2036.8-31.6%2062.2-31.6%2039.4%200%2068.8%2032%2068.8%2076.2ZM2028.3%20537.8V435.9h-40.1v-34.6h40.1v-71h41.2v71h52.3v34.6h-52.3v104.2c0%2012.5%206.6%2018.8%2019.1%2018.8h29.4v37.5h-27.2c-38.3%200-62.6-22.8-62.6-58.5ZM241.5%2089.1l74.4%2052.3L212.7%208.8c-1.1-1.5-2.9-2.2-4.6-2.2s-2.7.5-3.8%201.4l-17%2014.6c-2.5%202.1-2.7%206-.5%208.4l54.7%2058.1ZM124.8%2082.3l103.5%2059.1%2050.5%2016.5%2019.9%206.5%2019.9%206.5%208.5%202.8-17.5-12.2-40.6-28.6-40.6-28.6-81.3-57.1c-1.2-.8-2.6-1.2-4-1.2-2.4%200-4.7%201.2-6.1%203.3l-14.6%2023c-2.1%203.4-1.1%207.9%202.4%2010ZM70.7%20164.3l163%2036.8%2060.7%201.1%2020.9.4h5.7l15.2.4h2l11.9.3h3.3l-2.8-.9-8.5-2.8-11.2-3.6-3.8-1.2-12.8-4.2-7.1-2.3-40.2-13.1-47.2-15.4-135.9-44.4c-.9-.3-1.7-.4-2.6-.4-3.8%200-7.3%202.5-8.4%206.4l-8.8%2032.1c-1.3%204.7%201.6%209.6%206.4%2010.8ZM36.3%20279.1h.6l225-16.8%2067.2-19.2%2020.1-5.7%2020.1-5.7%206.1-1.7%2011.2-3.2%209-2.6h-8.3c0-.1-10.3-.3-10.3-.3l-16-.3-30.3-.6h-.1l-49.6-1-49.6-1-196.1-3.7c-6%200-10.8%204.9-10.6%2010.9l1.1%2040.6c.2%205.8%204.9%2010.3%2010.6%2010.3ZM38.4%20425.2l276.7-107.8%2068.1-44.1%2017.5-11.3%2024.8-16.1%209.8-6.4%2016.3-10.5-16.4%204.7-9.9%202.8-9.9%202.8-23.7%206.7-21.8%206.2-9%202.6-47.7%2013.6-47.7%2013.6-251.1%2071.7c-7%202.1-10.9%209.6-8.6%2016.5l15.8%2046.9c1.8%205.4%206.9%208.8%2012.3%208.8s3-.3%204.5-.8ZM483%20232.6l-8.7%205.6-8.6%205.6-29.6%2019.1-11.2%207.2-17.3%2011.2-41.7%2027-41.7%2027L38.8%20520.2c-7.4%205-9.2%2015.1-4%2022.3l35.1%2049.1c3.1%204.3%207.9%206.6%2012.8%206.6s6.7-1%209.6-3.2l443.4-350-22.7-31.8-30%2019.4ZM1515.3%20649.2h16.7v136.4h-16.7V649.2ZM1561.3%20740.9v4.4c0%2019.4%208.6%2027.4%2028.7%2027.4s23.4-5.3%2024.9-17.7h19.4c-6.7%2018.8-25.7%2032.5-44.3%2032.5-27.2%200-47.3-20.5-47.3-49.6s20.3-53.6%2047.3-53.6%2044.7%2021.7%2044.7%2049.6v7h-73.3Zm0-16.1v2.1h54.7v-2.5c0-17.9-7-25.3-25.8-25.3s-28.9%207.8-28.9%2025.7ZM1724.9%20720.8v64.8h-15.8v-11.2c-6.1%208.4-16.5%2013.1-29.4%2013.1-19.9%200-35.7-13.7-35.7-30.8s15.2-27.9%2036.7-27.9h27.6v-8.9c0-15-4.9-20.7-21.5-20.7s-22.4%205.5-23.2%2020.7h-17.1c3.2-20.5%2019.8-35.5%2040.8-35.5s37.6%2014.6%2037.6%2036.5Zm-16.7%2034.4v-12.3h-32.3c-9.3%200-13.9%203.8-13.9%2011.2v5.3c0%209.3%206.3%2013.3%2021.1%2013.3s25.1-5.3%2025.1-17.5ZM1791.2%20684.3v21.1h-15.4c-13.5%200-19.6%206.1-19.6%2019.6v60.6h-16.7v-99.4h15.8v18.6c7.8-11.4%2020.5-18.6%2035.9-20.5ZM1885.4%20723.5v62.1h-16.7v-64c0-15.8-7.4-22.4-24.3-22.4s-25.7%207-25.7%2023.4v63.1H1802v-99.4h15.8v14.8c7.6-10.6%2018.8-16.7%2031.7-16.7%2020.7%200%2035.9%2016.2%2035.9%2039.1ZM1897.2%20660.9c0-7.6%205.5-12.9%2012.9-12.9s12.7%205.3%2012.7%2012.9-5.5%2012.9-12.7%2012.9-12.9-5.5-12.9-12.9Zm4.5%2025.3h16.7v99.4h-16.7v-99.4ZM2019.7%20723.5v62.1H2003v-64c0-15.8-7.4-22.4-24.3-22.4s-25.7%207-25.7%2023.4v63.1h-16.7v-99.4h15.8v14.8c7.6-10.6%2018.8-16.7%2031.7-16.7%2020.7%200%2035.9%2016.2%2035.9%2039.1ZM2121.7%20686.2v102.2c0%2020.9-17.7%2038.4-43.7%2038.4s-44.1-17.7-44.5-37.4h17.1c.2%2016.9%207%2022.6%2027.4%2022.6s27-6.8%2027-25.5v-19.2c-8.6%209.5-19.2%2014.4-30.8%2014.4-24.9%200-43.9-21.1-43.9-49s18.8-48.3%2044.1-48.3%2024.9%206.5%2031.5%2015.8v-14.1h15.8Zm-16.7%2052.5v-11.8c0-19.4-8.4-27.5-27.9-27.5s-28.3%208.2-28.3%2027.5v11.8c0%2020%208.6%2028.5%2028.3%2028.5s27.9-8.5%2027.9-28.5Z%22%20class%3D%22st0%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M2493.5%20398.1h45.6c7.9%200%2015.1.9%2021.6%202.7%206.5%201.8%2012%204.5%2016.6%208.1%204.6%203.6%208.1%208.2%2010.6%2013.6%202.5%205.5%203.8%2011.9%203.8%2019.3v.8c0%207.5-1.3%2014-3.9%2019.4s-6.1%209.9-10.7%2013.4-10.1%206.1-16.5%207.8c-6.4%201.7-13.4%202.6-20.9%202.6h-19.8V540h-26.4V398.1Zm45.6%2068.8c8.7%200%2015.4-2.1%2019.9-6.1%204.6-4.1%206.9-10.1%206.9-18v-.8c0-8.5-2.4-14.5-7-18-4.7-3.6-11.3-5.4-19.7-5.4H2520V467h19.2ZM2638.3%20541.9c-4.8%200-9.3-.6-13.5-1.8-4.2-1.2-7.9-3-11-5.5-3.1-2.4-5.6-5.6-7.4-9.5-1.9-3.9-2.8-8.6-2.8-14s1.4-11.2%204.2-15.4c2.8-4.2%206.6-7.5%2011.3-10.1%204.8-2.6%2010.4-4.5%2016.9-5.7%206.5-1.2%2013.4-1.8%2020.8-1.8h12.9v-5.4c0-7.1-1.4-12.3-4.1-15.8-2.7-3.5-7.6-5.2-14.8-5.2s-11.1%201.4-14.2%204.3c-3.1%202.9-5%206.9-5.7%2012.1h-23.2c.5-6.1%202.1-11.3%204.6-15.6%202.5-4.3%205.8-7.8%209.7-10.6%204-2.8%208.5-4.8%2013.7-6.1s10.6-2%2016.5-2%2011.2.6%2016.3%201.9c5%201.3%209.4%203.4%2013.2%206.4%203.8%203%206.7%206.9%208.8%2011.7%202.1%204.8%203.2%2010.8%203.2%2018v68.1h-23.6v-12.7c-3.4%204.5-7.6%208.1-12.5%2010.7s-11.3%204-19.2%204Zm5.8-17.3c7.4%200%2013.5-1.8%2018.4-5.5s7.2-8.8%207.2-15.6v-10.3h-12.3c-9.1%200-16.4%201.2-21.8%203.7-5.4%202.5-8.1%206.9-8.1%2013.2s1.3%207.9%203.9%2010.5c2.6%202.7%206.9%204%2012.8%204ZM2722.1%20436.1h24v19.5c3.3-6.6%207.6-11.7%2012.8-15.4%205.2-3.6%2012.2-5.5%2020.9-5.7v22.4c-5.3%200-10%20.5-14.2%201.5-4.2%201-7.7%202.6-10.6%204.9-2.9%202.2-5.1%205.2-6.6%208.8-1.5%203.6-2.3%208.2-2.3%2013.8v54h-24V436.1ZM2837.9%20541.7c-10.3%200-18.1-2.7-23.4-8-5.3-5.3-7.9-12.9-7.9-22.9v-56.9h-13.9V436h13.9v-22.8h24V436h22.8v17.9h-22.8v54.5c0%204.6%201%208%203.1%2010.1%202.1%202.1%205%203.2%208.8%203.2s8.5-.7%2011.7-2v19.2c-1.9.7-4.1%201.3-6.8%201.8-2.6.5-5.8.8-9.5.8ZM2970.8%20541.9c-7.7%200-14.8-1.2-21.2-3.8-6.5-2.5-12.1-6.1-16.9-10.7-4.8-4.6-8.5-10.2-11.1-16.7-2.6-6.5-4-13.7-4-21.6v-1.6c0-8.1%201.4-15.4%204.1-21.9%202.7-6.5%206.4-12.2%2011.2-16.9%204.8-4.7%2010.4-8.3%2016.9-10.9%206.5-2.6%2013.6-3.9%2021.2-3.9s14.6%201.2%2021%203.8c6.5%202.5%2012.1%206.1%2016.9%2010.8%204.8%204.7%208.5%2010.3%2011.2%2016.8%202.7%206.5%204.1%2013.7%204.1%2021.6v1.6c0%208.1-1.4%2015.4-4.1%2021.9-2.7%206.5-6.4%2012.2-11.2%2016.9-4.8%204.7-10.4%208.3-16.9%2010.8-6.5%202.5-13.6%203.8-21.2%203.8Zm.2-18.9c9%200%2016-3.1%2021-9.2s7.5-14.5%207.5-25.2v-1.4c0-10.7-2.5-19.1-7.5-25.2-5-6.1-12-9.2-21-9.2s-16%203-21.1%209.1c-5.1%206.1-7.6%2014.5-7.6%2025.1v1.6c0%2010.7%202.5%2019.1%207.5%2025.2%205%206.1%2012.1%209.2%2021.2%209.2ZM3050.8%20454h-14.1v-17.9h14.1v-13.9c0-11.5%203-20.2%209-26.2s14.6-8.9%2025.9-8.9%205.4.2%207.3.5c2%20.3%204.1.8%206.4%201.5v18.6c-1.5-.5-3.1-1-4.9-1.3-1.8-.3-3.8-.5-6.1-.5-4.9%200-8.4%201.4-10.5%204.3-2.1%202.9-3.2%206.5-3.2%2011v14.9h23.6V454h-23.6v85.9h-24V454ZM2531.7%20614.8h52.6l45%20141.8h-43.1l-7.5-26.4h-47l-7.5%2026.4h-37.9l45.4-141.8Zm7.9%2087.5h31.1l-15.5-54.6-15.7%2054.6ZM2689%20759.1c-7.8%200-15-1.1-21.6-3.4-6.6-2.2-12.4-5.6-17.3-10.1-4.9-4.4-8.7-9.8-11.5-16.5-2.8-6.6-4.2-14.3-4.2-23v-1.6c0-8.6%201.4-16.3%204.4-23%202.9-6.7%206.9-12.4%2011.9-17.1%205-4.6%2010.9-8.2%2017.6-10.6%206.7-2.4%2013.9-3.7%2021.5-3.7s12.5.7%2018.4%202.2c5.9%201.5%2011.1%203.8%2015.8%207.1%204.6%203.4%208.4%207.9%2011.4%2013.3s4.7%2012.1%205.3%2020h-33.3c-.8-4.9-2.5-8.6-5.1-11.2-2.6-2.6-6.4-3.9-11.6-3.9s-11.2%202.2-14.7%206.7c-3.4%204.4-5.2%2011-5.2%2019.7v1.6c0%209.1%201.7%2016%205.2%2020.5%203.4%204.6%208.5%206.8%2015.3%206.8s9.1-1.5%2012.3-4.4c3.2-2.9%205.1-7.2%205.8-12.9h31.9c-.5%2013.1-5.2%2023.6-13.9%2031.5s-21.5%2011.8-38.3%2011.8ZM2806.3%20759.1c-7.8%200-15-1.1-21.6-3.4-6.6-2.2-12.4-5.6-17.3-10.1-4.9-4.4-8.7-9.8-11.5-16.5-2.8-6.6-4.2-14.3-4.2-23v-1.6c0-8.6%201.4-16.3%204.4-23%202.9-6.7%206.9-12.4%2011.9-17.1%205-4.6%2010.9-8.2%2017.6-10.6%206.7-2.4%2013.9-3.7%2021.5-3.7s12.5.7%2018.4%202.2c5.9%201.5%2011.1%203.8%2015.8%207.1%204.6%203.4%208.4%207.9%2011.4%2013.3s4.7%2012.1%205.3%2020h-33.3c-.8-4.9-2.5-8.6-5.1-11.2-2.6-2.6-6.4-3.9-11.6-3.9s-11.2%202.2-14.7%206.7c-3.4%204.4-5.2%2011-5.2%2019.7v1.6c0%209.1%201.7%2016%205.2%2020.5%203.4%204.6%208.5%206.8%2015.3%206.8s9.1-1.5%2012.3-4.4c3.2-2.9%205.1-7.2%205.8-12.9h31.9c-.5%2013.1-5.2%2023.6-13.9%2031.5s-21.5%2011.8-38.3%2011.8ZM2925.3%20759.1c-8.2%200-15.7-1.2-22.6-3.5-6.9-2.3-12.8-5.7-17.7-10.2-5-4.5-9-10-11.8-16.7-2.9-6.6-4.3-14.2-4.3-22.6v-1.6c0-8.3%201.4-15.8%204.4-22.5%202.9-6.7%206.9-12.4%2011.9-17.2%205-4.8%2011-8.4%2017.9-10.9%206.9-2.5%2014.2-3.8%2022-3.8s13.9%201.1%2020.2%203.2c6.4%202.1%2012%205.4%2016.9%209.7%204.8%204.4%208.6%209.9%2011.4%2016.7%202.8%206.8%204.3%2014.8%204.3%2024v9.3h-73c.5%206.9%202.7%2012.2%206.4%2016%203.8%203.8%208.8%205.7%2015.2%205.7s10.3-1.2%2013-3.6%204.4-5.3%205.1-8.7h33.3c-1.6%2011.8-6.8%2020.8-15.7%2027.2-8.9%206.3-21.2%209.5-36.9%209.5Zm18.1-66.1c-.3-6.3-1.9-11.2-5-14.5-3-3.3-7.5-5-13.3-5s-9.9%201.7-13.3%205c-3.4%203.3-5.6%208.1-6.6%2014.5h38.1ZM2994.7%20652.9h35.5v16.8c2.8-5.5%207-10.1%2012.6-13.9%205.6-3.8%2012.8-5.7%2021.5-5.7s18.2%203.2%2024.5%209.6c6.3%206.4%209.4%2016.2%209.4%2029.5v67.5h-35.5v-60.2c0-5.9-1.2-10.3-3.6-13.2-2.4-2.8-6.1-4.2-11.3-4.2s-9.6%201.6-12.8%204.8-4.9%208.1-4.9%2014.8v58h-35.5V652.9ZM3161.4%20759.1c-11.8%200-20.8-2.9-27.1-8.6-6.3-5.8-9.4-14.8-9.4-27.1v-46.2h-12.5V653h12.5v-21.6h35.5V653h20.4v24.2h-20.4V720c0%203.6.9%206.3%202.7%208.1s4.4%202.8%207.8%202.8%203.8-.1%205.4-.4c1.6-.3%203.2-.7%204.8-1.4v27c-2.2.7-5%201.3-8.3%202-3.3.7-7.1%201-11.3%201ZM3233%20759.1c-5%200-9.6-.8-13.9-2.3-4.2-1.5-7.9-3.9-10.9-7-3.2-3.2-5.7-7.2-7.4-12-1.8-4.8-2.7-10.5-2.7-17.2v-67.7h35.5v61.9c0%205.8%201.2%2010.2%203.7%2013.1%202.4%202.9%206.1%204.4%2011%204.4s9.7-1.6%2012.9-4.8c3.2-3.2%204.8-8.1%204.8-14.9v-59.7h35.5v103.8H3266v-16.1c-2.8%205.4-6.8%209.8-12%2013.3-5.2%203.4-12.2%205.2-20.9%205.2ZM3324.1%20652.9h35.5v20.6c3.3-7.8%207.7-13.5%2013.2-17%205.5-3.5%2012.3-5.2%2020.3-5.1v33.1c-10.8-.3-19.1%201.4-24.9%205-5.8%203.6-8.6%209.5-8.6%2017.8v49.2h-35.5V652.7ZM3460.4%20759.1c-8.2%200-15.7-1.2-22.6-3.5-6.9-2.3-12.8-5.7-17.7-10.2-5-4.5-9-10-11.8-16.7-2.9-6.6-4.3-14.2-4.3-22.6v-1.6c0-8.3%201.4-15.8%204.4-22.5%202.9-6.7%206.9-12.4%2011.9-17.2%205-4.8%2011-8.4%2017.9-10.9%206.9-2.5%2014.2-3.8%2022-3.8s13.9%201.1%2020.2%203.2c6.4%202.1%2012%205.4%2016.9%209.7%204.8%204.4%208.6%209.9%2011.4%2016.7%202.8%206.8%204.3%2014.8%204.3%2024v9.3h-73c.5%206.9%202.7%2012.2%206.4%2016%203.8%203.8%208.8%205.7%2015.2%205.7s10.3-1.2%2013-3.6%204.4-5.3%205.1-8.7h33.3c-1.6%2011.8-6.8%2020.8-15.7%2027.2-8.9%206.3-21.2%209.5-36.9%209.5Zm18-66.1c-.3-6.3-1.9-11.2-5-14.5-3-3.3-7.5-5-13.3-5s-9.9%201.7-13.3%205c-3.4%203.3-5.6%208.1-6.6%2014.5h38.1Z%22%20class%3D%22st0%22%2F%3E%3C%2Fsvg%3E");
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Variables */
+  --bg-main: #0d1117;
+  --bg-sidebar: #0d1117;
+  --header-color: white;
+  --text-main: #c9d1d9;
+  --text-muted: #59636e;
+  --link-color: #58a6ff;
+  --border-color: #30363d;
+  --bg-color-light: #1f2937;
+  --bg-color-muted: #010409;
+  --bg-color-intense: black;
+  --borderColor-default: #3d444d;
+  --borderColor-accent-emphasis: #1f6feb;
+  --fgColor-info: #4493f8;
+  --borderColor-done-emphasis: #8250df;
+  --fgColor-done: #ab7df8;
+  --borderColor-attention-emphasis: #9e6a03;
+  --fgColor-attention: #d29922;
+  --borderColor-success-emphasis: #238636;
+  --fgColor-success: #3fb950;
+  --borderColor-danger-emphasis: #da3633;
+  --fgColor-danger: #f85149;
+  --table-row-color: #010409;
+  --code-bg: #282a36;
+  --code-color: #c9d1d9;
+  --code-keyword: #ff7b72;
+  --code-entity: #d2a8ff;
+  --code-constant: #79c0ff;
+  --code-string: #a5d6ff;
+  --code-variable: #ffa657;
+  --code-comment: #8b949e;
+  --code-entity-tag: #7ee787;
+  --code-storage-modifier-import: #c9d1d9;
+  --code-markup-heading: #1f6feb;
+  --code-markup-list: #f2cc60;
+  --code-markup-italic: #c9d1d9;
+  --code-markup-bold: #c9d1d9;
+  --code-markup-inserted: #aff5b4;
+  --code-markup-inserted-bg: #033a16;
+  --code-markup-deleted: #ffdcd7;
+  --code-markup-deleted-bg: #67060c;
+
+  /* Brand-stable in both modes — explicit for token-coverage discipline. */
+  --accent: #ff6b00;
+  /* Decorative warm-grey accent — slightly lighter on dark for contrast. */
+  --rule-color: #d4b8b6;
+}
+
+/* ---------- [ Diagram Color Tokens ] ---------- */
+
+:root {
+  /* Raw color stops — values never change between light/dark */
+  --c-purple-50: #F5F3FF; --c-purple-100: #EDE9FE; --c-purple-200: #DDD6FE; --c-purple-400: #A78BFA; --c-purple-600: #7C3AED; --c-purple-800: #5B21B6; --c-purple-900: #4C1D95;
+  --c-teal-50: #F0FDFA;   --c-teal-100: #CCFBF1;   --c-teal-200: #99F6E4;   --c-teal-400: #2DD4BF;   --c-teal-600: #0D9488;   --c-teal-800: #115E59;   --c-teal-900: #134E4A;
+  --c-coral-50: #FFF7ED;   --c-coral-100: #FFEDD5;   --c-coral-200: #FED7AA;   --c-coral-400: #FB923C;   --c-coral-600: #EA580C;   --c-coral-800: #9A3412;   --c-coral-900: #7C2D12;
+  --c-pink-50: #FDF2F8;    --c-pink-100: #FCE7F3;    --c-pink-200: #FBCFE8;    --c-pink-400: #F472B6;    --c-pink-600: #DB2777;    --c-pink-800: #9D174D;    --c-pink-900: #831843;
+  --c-gray-50: #FAFAF9;    --c-gray-100: #F5F5F4;    --c-gray-200: #E7E5E4;    --c-gray-400: #A8A29E;    --c-gray-600: #57534E;    --c-gray-800: #292524;    --c-gray-900: #1C1917;
+  --c-blue-50: #EFF6FF;    --c-blue-100: #DBEAFE;    --c-blue-200: #BFDBFE;    --c-blue-400: #60A5FA;    --c-blue-600: #2563EB;    --c-blue-800: #1E40AF;    --c-blue-900: #1E3A8A;
+  --c-green-50: #F7FEE7;   --c-green-100: #ECFCCB;   --c-green-200: #D9F99D;   --c-green-400: #A3E635;   --c-green-600: #65A30D;   --c-green-800: #3F6212;   --c-green-900: #365314;
+  --c-amber-50: #FFFBEB;   --c-amber-100: #FEF3C7;   --c-amber-200: #FDE68A;   --c-amber-400: #FBBF24;   --c-amber-600: #D97706;   --c-amber-800: #92400E;   --c-amber-900: #78350F;
+  --c-red-50: #FEF2F2;     --c-red-100: #FEE2E2;     --c-red-200: #FECACA;     --c-red-400: #F87171;     --c-red-600: #DC2626;     --c-red-800: #991B1B;     --c-red-900: #7F1D1D;
+}
+
+/* Dark mode — remap which stops the color classes use */
+[data-theme="dark"] [class^="c-"] > rect,
+[data-theme="dark"] [class^="c-"] > circle,
+[data-theme="dark"] [class^="c-"] > ellipse,
+[data-theme="dark"] [class^="c-"] > polygon { fill: var(--_800); stroke: var(--_200); }
+[data-theme="dark"] [class^="c-"] > .d-th,
+[data-theme="dark"] [class^="c-"] > .d-t     { fill: var(--_100); }
+[data-theme="dark"] [class^="c-"] > .d-ts    { fill: var(--_200); }
+
+a {
+  text-decoration: none;
+}
+
+h2, h3, h4 {
+  line-height: 105%;
+}
+
+.sect2 {
+  margin-top: var(--space-8);
+}
+
+.sect2 h3 {
+  line-height: 105%;
+  margin-bottom: var(--space-4);
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/* Size roles — matches asciidoctor's `<div class="paragraph lead">`
+   wrapper and inline `<span class="small">` form. */
+.lead {
+  font-size: 1.266em;
+}
+
+.big {
+  font-size: 1.125em;
+}
+
+.small {
+  font-size: 0.889em;
+}
+
+pre {
+  font-size: 12px;
+}
+
+table.tableblock {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-radius: var(--radius-small, 8px);
+  box-shadow: 0 0 0 1px var(--borderColor-default);
+  font-variant: tabular-nums;
+  max-width: 100%;
+  overflow: hidden;
+  width: fit-content;
+}
+
+table.tableblock > thead > tr:first-child > th,
+table.tableblock > thead > tr:first-child > td,
+table.tableblock > tbody:first-child > tr:first-child > th,
+table.tableblock > tbody:first-child > tr:first-child > td {
+  border-top: 0;
+}
+table.tableblock > tbody:last-child > tr:last-child > th,
+table.tableblock > tbody:last-child > tr:last-child > td,
+table.tableblock > tfoot:last-child > tr:last-child > th,
+table.tableblock > tfoot:last-child > tr:last-child > td {
+  border-bottom: 0;
+}
+table.tableblock th:first-child,
+table.tableblock td:first-child {
+  border-left: 0;
+}
+table.tableblock th:last-child,
+table.tableblock td:last-child {
+  border-right: 0;
+}
+
+table.tableblock > thead > tr:first-child > th:first-child,
+table.tableblock > tbody:first-child > tr:first-child > td:first-child {
+  border-top-left-radius: var(--radius-small, 8px);
+}
+table.tableblock > thead > tr:first-child > th:last-child,
+table.tableblock > tbody:first-child > tr:first-child > td:last-child {
+  border-top-right-radius: var(--radius-small, 8px);
+}
+table.tableblock > tbody:last-child > tr:last-child > th:first-child,
+table.tableblock > tbody:last-child > tr:last-child > td:first-child {
+  border-bottom-left-radius: var(--radius-small, 8px);
+}
+table.tableblock > tbody:last-child > tr:last-child > th:last-child,
+table.tableblock > tbody:last-child > tr:last-child > td:last-child {
+  border-bottom-right-radius: var(--radius-small, 8px);
+}
+
+table.tableblock th {
+  font-weight: 600;
+  background-color: var(--bg-color-muted);
+}
+
+table th.halign-left,
+table td.halign-left {
+  text-align: left;
+}
+
+table th.halign-right,
+table td.halign-right {
+  text-align: right;
+}
+
+table th.halign-center,
+table td.halign-center {
+  text-align: center;
+}
+
+table th.valign-top,
+table td.valign-top {
+  vertical-align: top;
+}
+
+table th.valign-bottom,
+table td.valign-bottom {
+  vertical-align: bottom;
+}
+
+table th.valign-middle,
+table td.valign-middle {
+  vertical-align: middle;
+}
+
+table.tableblock th,
+table.tableblock td {
+  padding: 6px 13px;
+  border: 1px solid var(--borderColor-default);
+  overflow-wrap: anywhere;
+}
+
+table.tableblock td {
+  vertical-align: top;
+}
+
+table.tableblock td > :last-child {
+  margin-bottom: 0;
+}
+
+table.tableblock tr {
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-color-muted);
+}
+
+table.tableblock tr:nth-child(2n) {
+  background-color: var(--table-row-color);
+}
+
+table.tableblock img {
+  background-color: transparent;
+}
+
+table.tableblock p {
+  margin: 0;
+}
+
+.exampleblock.grid > .content {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.exampleblock.col > .content {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: unset;
+}
+
+.exampleblock.grid > .content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1em;
+}
+
+.exampleblock.grid.one-one > .content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.two-one > .content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.one-two > .content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+}
+
+.exampleblock.grid.valign-center {
+  height: 95%;
+}
+
+.exampleblock.grid.valign-center > .content {
+  align-items: center;
+  height: 95%;
+}
+
+.exampleblock.col.valign-center {
+  height: 95%;
+  display: flex;
+  align-items: center;
+}
+
+.exampleblock.grid.quadchart > .content {
+  grid-template: 1fr 1fr / 1fr 1fr;
+  gap: 0;
+}
+
+.exampleblock.grid.quadchart > .content > .exampleblock.col > .content {
+  padding: var(--space-4);
+}
+
+.exampleblock.grid.quadchart > .content > .exampleblock.col:nth-child(2),
+.exampleblock.grid.quadchart > .content > .exampleblock.col:nth-child(3) {
+  background: var(--table-row-color);
+}
+
+.mermaid-container {
+  break-inside: avoid;
+  page-break-inside: avoid; /* older browsers */
+  -webkit-column-break-inside: avoid; /* Safari */
+}
+
+.agenda {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+  counter-reset: section;
+}
+
+.agenda h3 {
+  grid-column: span 2;
+}
+
+.agenda .paragraph {
+  counter-increment: section;
+  background: var(--bg-color-light);
+  border-radius: var(--radius-small, 8px);
+  font-size: 0.9375rem;
+  padding: var(--space-3);
+  position: relative;
+}
+
+.agenda .paragraph .title {
+  text-align: left;
+  display: block;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.agenda .paragraph p {
+  margin-top: 0;
+}
+
+.agenda .paragraph::before {
+  content: counter(section);
+  font-weight: bold;
+  background: var(--accent);
+  border-radius: var(--radius-small, 8px);
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  text-align: center;
+  line-height: 1.5rem;
+  font-size: 1rem;
+  margin-top: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+/* Stack fixed-ratio grids once the content column is too narrow for
+   readable columns. Container query, not viewport — see .doc-content. */
+@container (max-width: 32rem) {
+  .exampleblock.grid.one-one > .content,
+  .exampleblock.grid.two-one > .content,
+  .exampleblock.grid.one-two > .content,
+  .agenda {
+    grid-template-columns: 1fr;
+  }
+
+  .exampleblock.grid.quadchart > .content {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+}
+
+ol ol,
+ul ol {
+  list-style-type: lower-roman;
+}
+
+ul ul ol, 
+ul ol ol, 
+ol ul ol, 
+ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.exampleblock .title,
+.listingblock .title,
+table caption {
+  font-style: italic;
+  text-align: center;
+}
+
+pre {
+  margin-top: 0;
+}
+
+*:not(pre) > code, tt {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #fcf7f2;
+  border: 1px solid #d1d9e0b3;
+  border-radius: 6px;
+}
+
+ul.checklist {
+  list-style-type: none;
+  padding-left: 0.6rem;
+}
+
+table {
+  margin-bottom: var(--space-4);
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  padding: 0;
+  margin-top: var(--space-4);
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+dl dd {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+dd p {
+  margin-top: 0;
+}
+
+dd {
+  margin-left: 0;
+}
+
+.quoteblock {
+  margin: var(--space-6);
+  padding: 0 1em;
+  border-left: 0.25em solid #3c071266;
+}
+
+.quoteblock {
+  blockquote {
+    margin: var(--space-1);
+  }
+}
+
+.quoteblock {
+  & blockquote {
+    & p {
+      &:before {
+        transform: scale(-1, 1);
+      }
+      &:first-child:before, &:last-child:after {
+        content: "";
+        color: var(--accent);
+        font-family: 'Phosphor';
+        display: inline-block;
+        padding-left: 0.5em;
+      }
+    }
+  }
+}
+
+.quoteblock {
+  & > .attribution {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    text-align: right;
+  }
+}
+
+.exampleblock {
+  & > .content {
+    border: 0.1em solid var(--bg-color-intense);
+    border-radius: 12px;
+    padding: 0.25em 0.75em;
+    margin-bottom: 1em;
+  }
+}
+
+kbd {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: var(--text-main);
+  background: var(--bg-color-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 0.1em var(--bg-main) inset;
+  padding: 0.1em 0.45em;
+  margin: 0 0.15em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.05em;
+  white-space: nowrap;
+}
+
+.keyseq kbd:first-child { margin-left: 0; }
+.keyseq kbd:last-child  { margin-right: 0; }
+
+b.button {
+  display: inline-block;
+  background-color: var(--bg-color-intense);
+  color: white;
+  border-radius: 5em;
+  font-weight: normal;
+  font-size: 0.889em;
+  padding: 0.05em 0.5em 0.2em;
+  margin: 0 0.25em;
+  vertical-align: baseline;
+}
+
+.menuseq {
+  color: var(--menu-color, var(--bg-color-intense));
+  font-weight: bold;
+  padding: 0 0.25em;
+}
+
+.menuseq .caret {
+  color: var(--text-muted);
+  font-style: normal;
+  font-weight: normal;
+  padding: 0 0.15em;
+}
+
+[data-theme="dark"] {
+  --menu-color: var(--rule-color);
+}
+
+/* ---------- [ Icons ] ---------- */
+.ph {
+    display: inline-block;
+}
+.ph.size-1x {
+    font-size: 1em;
+}
+.ph.size-2x {
+    font-size: 2em;
+}
+.ph.size-3x {
+    font-size: 3em;
+}
+.ph.size-4x {
+    font-size: 4em;
+}
+.ph.size-5x {
+    font-size: 5em;
+}
+.ph.size-lg {
+    font-size: 6em;
+}
+.ph.size-fw {
+    font-size: 1em;
+} /* FIXME - Fixed width */
+
+.ph.flip-horizontal {
+    transform: scaleX(-1);
+}
+.ph.flip-vertical {
+    transform: scaleY(-1);
+}
+
+.ph.rotate-90 {
+    transform: rotate(90deg);
+}
+.ph.rotate-180 {
+    transform: rotate(180deg);
+}
+.ph.rotate-270 {
+    transform: rotate(270deg);
+}
+
+.accent {
+    color: var(--fgColor-accent);
+}
+.success {
+    color: var(--fgColor-success);
+}
+.attention {
+    color: var(--fgColor-attention);
+}
+.danger {
+    color: var(--fgColor-danger);
+}
+.done {
+    color: var(--fgColor-done);
+}
+
+/* Styles for AI prompt boxes */
+
+.openblock.prompt {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;              /* take full row width so next block wraps below */
+  clear: both;
+  margin-top: 10px;
+}
+
+.openblock.prompt::before {
+  content: "";
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-color-prompt);
+
+  /* Robot icon from Phosphor as an inline SVG data URI */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='none'%3E%3Ccircle cx='128' cy='96' r='64' stroke='%23888' stroke-width='16'/%3E%3Cpath d='M32 216c0-52.9 43.1-96 96-96s96 43.1 96 96' stroke='%23888' stroke-width='16' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  display: block;
+  align-self: flex-end;
+}
+
+.openblock.prompt .content {
+  background: var(--bg-color-prompt-bubble);
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  margin-left: 5px;
+}
+
+.openblock.prompt .content p {
+  margin: 0;
+}
+
+.openblock.prompt-response {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;              /* take full row width so next block wraps below */
+  clear: both;
+  margin-top: 10px;
+}
+
+.openblock.prompt-response::before {
+  content: "";
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-color-prompt);
+
+  /* Person icon from Phosphor as an inline SVG data URI */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%23888'%3E%3Crect width='256' height='256' fill='none'/%3E%3Crect x='64' y='96' width='128' height='96' rx='8' fill='none' stroke='%23888' stroke-width='16'/%3E%3Cpath d='M160,96V88a32,32,0,0,0-64,0v8' fill='none' stroke='%23888' stroke-width='16'/%3E%3Ccircle cx='104' cy='144' r='8' fill='%23888'/%3E%3Ccircle cx='152' cy='144' r='8' fill='%23888'/%3E%3Cline x1='148' y1='192' x2='148' y2='216' stroke='%23888' stroke-width='16'/%3E%3Cline x1='108' y1='192' x2='108' y2='216' stroke='%23888' stroke-width='16'/%3E%3Cline x1='192' y1='120' x2='216' y2='120' stroke='%23888' stroke-width='16'/%3E%3Cline x1='40' y1='120' x2='64' y2='120' stroke='%23888' stroke-width='16'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  display: block;
+  align-self: flex-end;
+}
+
+.openblock.prompt-response .content {
+  background: var(--bg-color-prompt);
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  margin-left: 5px;
+}
+
+.openblock.prompt .content p,
+.openblock.prompt-response .content p {
+  margin: 0;
+}
+
+.openblock.prompt .content .paragraph + .paragraph,
+.openblock.prompt-response .content .paragraph + .paragraph {
+  margin-top: 1em;
+}
+html {
+  /* This ensures the page stops scrolling before the title hits the top */
+  scroll-padding-top: calc(var(--header-height) + 20px); 
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s, color 0.3s;
+  line-height: 1.35;
+  font-kerning: normal;
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  text-rendering: optimizeLegibility;
+}
+
+/* Standardized vertical rhythm — non-heading blocks share a bottom
+   margin of --space-4 (16 px). Headings get a larger bottom margin
+   (--space-6, 32 px) so heading → content reads as a clear break. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+nav h2 {
+  margin-top: 0;
+}
+
+p, ul, ol, dl, pre, table, blockquote, figure,
+.imageblock, .listingblock, .literalblock, .openblock,
+.exampleblock, .sidebarblock, .admonitionblock, .quoteblock {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+h3 {
+  font-size: var(--font-size-title-lg);
+}
+
+h4 {
+  font-size: var(--font-size-title-md);
+}
+
+h5 {
+  font-size: var(--font-size-title-sm);
+}
+
+/* Fixed Header */
+body > header {
+  height: var(--header-height);
+  background-color: var(--bg-color-muted);
+  color: var(--header-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.container {
+  display: flex;
+  margin-top: var(--header-height);
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* Sticky Fixed Sidebar */
+aside {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+  flex-shrink: 0;
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: var(--space-6) var(--space-5);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Content & Image Scaling */
+main {
+  flex-grow: 1;
+  min-width: 0; /* Prevents layout break from code/images */
+  padding: var(--space-6) 4rem;
+}
+
+.doc-content {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.doc-content .content-header {
+  background-color: var(--bg-color-intense);
+  color: white;
+  padding-top: var(--space-6);
+  padding-right: var(--space-8);
+  padding-bottom: 6rem;
+  padding-left: var(--space-8);
+  border-radius: 10px;
+}
+
+.doc-content .content-header .content-sub-title {
+  font-size: 1.875rem;
+  margin-bottom: 0;
+}
+
+.doc-content .content-header .content-title {
+  font-size: 4rem;
+  line-height: 105%;
+  margin-top: 0;
+}
+
+.doc-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-5) 0;
+  border-radius: 6px;
+}
+
+.doc-content pre {
+  background-color: var(--code-bg);
+  padding: 5px;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+}
+
+/* TOC Styling */
+.toc-wrapper {
+  flex: 1;
+}
+
+.toc-wrapper h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.toc-wrapper ul { 
+  list-style: none; padding: 0; margin: 0; 
+}
+.toc-wrapper li { 
+  margin-bottom: 0.6rem; 
+}
+.toc-wrapper a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    position: relative; /* Added to anchor the pseudo-element */
+    display: flex;      /* Ensures the flex layout for icon placement */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    padding-right: 5px;
+    transition: color 0.2s ease;
+}
+
+.toc-wrapper a.active {
+    color: var(--link-color);
+    font-weight: 700;
+}
+
+.toc-wrapper a.active::before {
+  content: "";
+  position: absolute;
+  left: -12px; /* Positions the bar to the left of the text without pushing it */
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--link-color);
+  border-radius: 2px;
+}
+
+.toc-wrapper a span:first-child {
+  flex: 1;
+  overflow-wrap: break-word; /* Allows long words to break if necessary */
+  line-height: 1.2;
+}
+
+.sectlevel2 a.active::before {
+    left: -15px; /* Adjust as needed for nested indentation */
+}
+
+.toc-wrapper li {
+  margin-bottom: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.toc-wrapper .sectlevel1 > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.toc-wrapper .sectlevel1 > li > a.active-parent::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--link-color);
+    border-radius: 2px;
+}
+
+.toc-wrapper a.active-parent {
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* Hide sub-levels by default */
+.toc-wrapper .sectlevel2 {
+  display: none;
+  padding-left: var(--space-5);
+  padding-top: var(--space-2);
+}
+
+/* Class to show the sub-level */
+.toc-wrapper .sectlevel2.is-visible {
+  display: block;
+}
+
+/* Styling for the expand icon */
+.toc-plus-icon {
+  flex-shrink: 0; /* Prevents the icon from being compressed by long text */
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover color for the arrow */
+.toc-wrapper a:hover .toc-plus-icon {
+  border-color: var(--link-color);
+}
+
+/* Rotate the arrow to point down when expanded */
+.toc-wrapper .is-expanded > a .toc-plus-icon {
+  transform: rotate(45deg);
+  border-color: var(--link-color);
+}
+
+#theme-toggle {
+  cursor: pointer;
+  padding: 6px 12px;
+  color: var(--header-color);
+  background: none;
+  border: 0;
+  font-size: 0.8rem;
+}
+
+.sun-icon { display: none; }
+.moon-icon { display: block; }
+
+[data-theme="dark"] .sun-icon { display: block; }
+[data-theme="dark"] .moon-icon { display: none; }
+
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  aside {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  main { padding: var(--space-6); }
+}
+
+.header-logo {
+  /* Dimensions for the logo */
+  width: 160px;
+  height: 40px;
+  margin-right: 15px;
+
+  /* Use the logo variable as a mask */
+  -webkit-mask-image: var(--theme-logo);
+  mask-image: var(--theme-logo);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  /* This forces the logo to match the header text color */
+  background-color: var(--header-color);
+  
+  /* Vertical alignment within the flex header */
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.sect1 > header {
+  background: var(--bg-color-light);
+  border-radius: 10px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  padding-right: var(--space-8);
+  padding-bottom: var(--space-6);
+  padding-left: var(--space-8);
+}
+
+.sect1 > header > h2 {
+  font-size: 3.25rem;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.sect1 > header > p {
+  margin-top: 0;
+  font-weight: bolder;
+  font-size: 1.375rem;
+}
+
+.objectives li {
+  margin-bottom: var(--space-3);
+}
+
+.objectives li:last-child {
+  margin-bottom: 0;
+}
+
+.objectives li p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.objectives ul {
+  list-style: none;
+  padding-left: var(--space-5);
+}
+
+.objectives li::before {
+  content: "\E182"; /* Phosphor check */
+  font-family: 'Phosphor';
+  font-weight: bold;
+  color: var(--accent);
+  display: inline-block;
+  width: 1.5em;
+  margin-left: -1.5em;
+}
+
+li > p {
+  margin: 0;
+}
+
+.openblock.details {
+  border-top: 1px solid var(--rule-color);
+}
+
+.openblock.notes {
+  border-top: 3px solid var(--rule-color);
+  border-bottom: 3px solid var(--rule-color);
+}
+
+.sidebar-footer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+}
+.hljs {
+  color: var(--code-color);
+  background: var(--code-bg);
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: var(--code-keyword);
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: var(--code-entity);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: var(--code-constant);
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: var(--code-string);
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: var(--code-variable);
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: var(--code-comment);
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: var(--code-entity-tag);
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: var(--code-storage-modifier-import);
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: var(--code-markup-heading);
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: var(--code-markup-list);
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: var(--code-markup-italic);
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: var(--code-markup-bold);
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: var(--code-markup-inserted);
+  background-color: var(--code-markup-inserted-bg);
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: var(--code-markup-deleted);
+  background-color: var(--code-markup-deleted-bg);
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  color: inherit;
+  border-left: 0.25em solid var(--borderColor-default);
+}
+
+.markdown-alert > :first-child {
+  margin-top: 0;
+}
+
+.markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--borderColor-accent-emphasis);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--fgColor-info);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--borderColor-done-emphasis);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--fgColor-done);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--borderColor-attention-emphasis);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--fgColor-attention);
+}
+
+.markdown-alert.markdown-alert-tip,
+.markdown-alert.markdown-alert-success {
+  border-left-color: var(--borderColor-success-emphasis);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title,
+.markdown-alert.markdown-alert-success .markdown-alert-title {
+  color: var(--fgColor-success);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--borderColor-danger-emphasis);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--fgColor-danger);
+}    
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo"></div>
+    <div style="flex: 1; font-weight: 600; font-size: 1.2rem;">WA3856 TypeScript, NPM, and Vite for Leaders</div>
+    <button id="theme-toggle" aria-label="Toggle theme">
+      <svg class="moon-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"></path>
+      </svg>
+      <svg class="sun-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5zM0 8a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 8zm13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zM1.11 1.11a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 1 1-.707.707L1.11 1.817a.5.5 0 0 1 0-.707zm11.778 11.778a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1-.707.707l-1.414-1.414a.5.5 0 0 1 0-.707zM1.817 14.89a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707.707l-1.414 1.414zm13.073-13.073a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0z"></path>
+      </svg>
+    </button>
+  </header>
+  <div class="container">
+    <aside>
+      <nav class="toc-wrapper">
+        <h2>Table of Contents</h2>
+        <ul class="sectlevel1">
+<li><a href="#_evergreen_insurance_quote_page_adding_types_with_typescript_npm_and_vite">
+      <span>1. Evergreen Insurance Quote Page — Adding Types with TypeScript, NPM, and Vite</span>
+      <span class="toc-plus-icon"></span>
+    </a>
+<ul class="sectlevel2">
+<li><a href="#_a_note_about_keyboard_shortcuts">1.1. A Note About Keyboard Shortcuts</a></li>
+<li><a href="#_why_youre_doing_this_lab">1.2. Why You’re Doing This Lab</a></li>
+<li><a href="#_whats_already_set_up_on_your_lab_vm">1.3. What’s Already Set Up on Your Lab VM</a></li>
+<li><a href="#_open_the_project_and_install_packages">1.4. Open the Project and Install Packages</a></li>
+<li><a href="#_see_the_problem_typescript_solves">1.5. See the Problem TypeScript Solves</a></li>
+<li><a href="#_define_the_types">1.6. Define the Types</a></li>
+<li><a href="#_type_the_functions">1.7. Type the Functions</a></li>
+<li><a href="#_watch_typescript_catch_a_bug">1.8. Watch TypeScript Catch a Bug</a></li>
+<li><a href="#_build_for_production">1.9. Build for Production</a></li>
+<li><a href="#_review">1.10. Review</a></li>
+</ul>
+</li>
+<li><a href="#_evergreen_insurance_quote_page_vite_build_tooling_and_project_configuration">
+      <span>2. Evergreen Insurance Quote Page — Vite, Build Tooling, and Project Configuration</span>
+      <span class="toc-plus-icon"></span>
+    </a>
+<ul class="sectlevel2">
+<li><a href="#_a_note_about_keyboard_shortcuts_2">2.1. A Note About Keyboard Shortcuts</a></li>
+<li><a href="#_why_youre_doing_this_lab_2">2.2. Why You’re Doing This Lab</a></li>
+<li><a href="#_whats_already_set_up_on_your_lab_vm_2">2.3. What’s Already Set Up on Your Lab VM</a></li>
+<li><a href="#_open_the_project_and_start_the_dev_server">2.4. Open the Project and Start the Dev Server</a></li>
+<li><a href="#_watch_hot_module_replacement_hmr">2.5. Watch Hot Module Replacement (HMR)</a></li>
+<li><a href="#_read_the_npm_scripts">2.6. Read the npm Scripts</a></li>
+<li><a href="#_build_for_production_and_inspect_dist">2.7. Build for Production and Inspect dist/</a></li>
+<li><a href="#_add_an_environment_variable">2.8. Add an Environment Variable</a></li>
+<li><a href="#_add_a_path_alias">2.9. Add a Path Alias</a></li>
+<li><a href="#_review_2">2.10. Review</a></li>
+</ul>
+</li>
+</ul>
+      </nav>
+      <div class="sidebar-footer">
+        1.0.0
+      </div>
+    </aside>
+    <main>
+      <article class="doc-content">
+        <div class="content-header">
+          <p class="content-sub-title">WA3856 Lab Guide</p>
+          <h1 class="content-title">TypeScript, NPM, and Vite for Leaders</h1>
+        </div>
+        <div class="sect1">
+<header><h2 id="_evergreen_insurance_quote_page_adding_types_with_typescript_npm_and_vite">Evergreen Insurance Quote Page — Adding Types with TypeScript, NPM, and Vite</h2><p>Lab 1</p></header>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will take the Evergreen quote logic from last week’s JavaScript lab and move it into a real <strong>TypeScript</strong> project — managed by <strong>NPM</strong> and run with <strong>Vite</strong>. The app already works. Your job is to add the <strong>types</strong> that turn it from "hope it’s right" into "the compiler checked it for you."</p>
+</div>
+<div class="paragraph">
+<p>You are not expected to master TypeScript’s type system. You are here to <strong>see</strong> what types do: catch mistakes before code runs, power the autocomplete your engineers rely on, and serve as a contract between the pieces of an app.</p>
+</div>
+<div class="sect2">
+<h3 id="_a_note_about_keyboard_shortcuts">1.1. A Note About Keyboard Shortcuts</h3>
+<div class="paragraph">
+<p>Your lab VM runs inside your browser. If a keyboard shortcut doesn’t reach the VM, use the mouse/menu alternative listed next to it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_youre_doing_this_lab">1.2. Why You’re Doing This Lab</h3>
+<div class="paragraph">
+<p>When your engineers say "TypeScript caught it," "that’s a type error," or "the build is red," they are describing the safety net you are about to install. After this lab, a pull request that adds an <code>interface</code> or a <code>: number</code> will read like something you have done, not something mysterious.</p>
+</div>
+<div class="paragraph">
+<p>This lab also shows you the everyday toolchain — <code>npm install</code>, <code>npm run dev</code>, <code>npm run build</code> — that sits under every modern front-end project at Liberty Mutual.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_whats_already_set_up_on_your_lab_vm">1.3. What’s Already Set Up on Your Lab VM</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Visual Studio Code</strong> with TypeScript support built in.</p>
+</li>
+<li>
+<p><strong>Node.js and NPM</strong> — already installed; check with <code>node -v</code> and <code>npm -v</code>.</p>
+</li>
+<li>
+<p>The starter project: the same Evergreen quote app, now split into TypeScript modules under <code>src/</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_open_the_project_and_install_packages">1.4. Open the Project and Install Packages</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open a terminal (Terminal icon in the dock, or <code>Ctrl+Alt+T</code>).</p>
+</li>
+<li>
+<p>Go into the lab folder and open it in VS Code:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">cd</span> ~/Labfiles/evergreen-quote-typescript-build
+code .</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the project’s packages. This reads <code>package.json</code> and downloads TypeScript and Vite into a <code>node_modules</code> folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm install</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> <code>package.json</code> is the project’s manifest. <code>npm install</code> is how every engineer sets up a project they just cloned. The <code>node_modules</code> folder it creates is never committed — it is rebuilt from <code>package.json</code> on each machine.</p>
+</div>
+</li>
+<li>
+<p>Start the dev server:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vite prints a local URL (usually <code><a href="http://localhost:5173" class="bare">http://localhost:5173</a></code>). <code>Ctrl+Click</code> it, or open it in Chrome. The Evergreen quote page appears and the estimate already updates as you type.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="markdown-alert markdown-alert-note">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-info"></i>&nbsp;Note
+      </p>
+      <p><code>npm run dev</code> runs the <code>"dev"</code> script from <code>package.json</code>. Look at the <code>"scripts"</code> section — <code>dev</code>, <code>build</code>, and <code>preview</code> are just named shortcuts for longer commands.</p>
+    </div>
+</div>
+<div class="sect2">
+<h3 id="_see_the_problem_typescript_solves">1.5. See the Problem TypeScript Solves</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In VS Code, open <code>src/premium.ts</code>.</p>
+</li>
+<li>
+<p>Notice the red squiggly underlines. Hover over one. In <code>premium.ts</code>, TypeScript reports two things: <code>CoverageType</code> is imported from <code>./types</code> but isn’t defined there yet — <strong>"Module './types' has no exported member 'CoverageType'"</strong> — and the function parameters (<code>type</code>, <code>age</code>, <code>coverageAmount</code>) implicitly have the <code>any</code> type. The same "no exported member" error appears for <code>Quote</code> in <code>src/sampleQuotes.ts</code> and <code>src/main.ts</code>, which import that type the same way.</p>
+</li>
+<li>
+<p>The app <strong>still runs</strong> in the browser — Vite’s dev server strips types and runs the plain JavaScript. The type errors only stop you at <strong>build</strong> time. Prove it. In a new terminal, run:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run build</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The build fails with a list of type errors. That red is the safety net doing its job.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> This is the core trade leaders need to understand. TypeScript adds a step that <strong>refuses to ship</strong> code whose types don’t line up. It is friction on purpose — friction that catches a whole category of bugs before a customer ever sees them.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_define_the_types">1.6. Define the Types</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>src/types.ts</code>. Replace the entire contents of the file — the comments and the placeholder <code>export {}</code> line — with:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">CoverageType</span> = <span class="hljs-string">"auto"</span> | <span class="hljs-string">"home"</span> | <span class="hljs-string">"life"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Quote</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">CoverageType</span>;
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">coverageAmount</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">monthlyPremium</span>: <span class="hljs-built_in">number</span>;
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Save the file.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>What you just wrote:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CoverageType</code> is a <strong>union type</strong> — a value that must be exactly one of three strings. Misspell <code>"home"</code> as <code>"hom"</code> anywhere and TypeScript flags it.</p>
+</li>
+<li>
+<p><code>Quote</code> is an <strong>interface</strong> — a contract describing the shape of a saved quote. Any object claiming to be a <code>Quote</code> must have all five fields, with the right types.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Look at <code>src/sampleQuotes.ts</code>. The red underline is gone — TypeScript now knows each object matches <code>Quote</code>.</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_type_the_functions">1.7. Type the Functions</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>src/premium.ts</code>. Find <code>calculatePremium</code> and add the annotations:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">calculatePremium</span>(<span class="hljs-params">
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">CoverageType</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>,
+  <span class="hljs-attr">coverageAmount</span>: <span class="hljs-built_in">number</span>
+</span>): <span class="hljs-built_in">number</span> {
+  <span class="hljs-keyword">const</span> base = <span class="hljs-variable constant_">BASE_RATES</span>[<span class="hljs-keyword">type</span>] ?? <span class="hljs-number">100</span>;
+  <span class="hljs-keyword">const</span> ageFactor = age &lt; <span class="hljs-number">25</span> ? <span class="hljs-number">1.4</span> : age &gt; <span class="hljs-number">60</span> ? <span class="hljs-number">1.25</span> : <span class="hljs-number">1.0</span>;
+  <span class="hljs-keyword">const</span> coverageFactor = coverageAmount / <span class="hljs-number">10000</span>;
+  <span class="hljs-keyword">return</span> base * ageFactor * coverageFactor;
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Find <code>validateInputs</code> and add its annotations:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">validateInputs</span>(<span class="hljs-params"><span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">coverageAmount</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Save. The red underlines in <code>premium.ts</code> disappear.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> <code>: number</code> and <code>: CoverageType</code> are the contracts. The <code>: number</code> after the parentheses is the <strong>return type</strong> — TypeScript will now complain if this function ever returns anything but a number.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_watch_typescript_catch_a_bug">1.8. Watch TypeScript Catch a Bug</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>src/main.ts</code>. Find the line that calls <code>calculatePremium</code> (around line 29). Temporarily break it by passing the age as a string:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">const</span> premium = <span class="hljs-title function_">calculatePremium</span>(<span class="hljs-keyword">type</span>, <span class="hljs-string">"thirty-five"</span>, coverageAmount);</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Look at the editor: a red underline appears immediately on <code>"thirty-five"</code>. Hover it — TypeScript says a <code>string</code> is not assignable to a parameter of type <code>number</code>. <strong>You found the bug without running anything.</strong></p>
+</li>
+<li>
+<p>Undo that change (<code>Ctrl+Z</code>, or <strong>Edit &gt; Undo</strong>) so the line is correct again.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> In plain JavaScript, that bug would have produced <code>NaN</code> on a customer’s screen. In TypeScript, it never compiles. This is the single clearest answer to "why do we use TypeScript?"</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_build_for_production">1.9. Build for Production</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>With all the types in place, run the build again:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run build</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>This time it succeeds. The <code>"build"</code> script runs <code>tsc</code> (the type-checker) first; only if every type lines up does Vite produce the optimized output in a <code>dist/</code> folder.</p>
+</li>
+<li>
+<p>Preview the production build:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run preview</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> A green build is the gate. When a leader hears "the build is passing," it means the type contracts hold across the whole project — exactly the assurance you just earned.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review">1.10. Review</h3>
+<div class="paragraph">
+<p>In this lab you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Used <strong>NPM</strong> to install dependencies and run scripts (<code>npm install</code>, <code>npm run dev</code>, <code>npm run build</code>).</p>
+</li>
+<li>
+<p>Defined a <strong>union type</strong> and an <strong>interface</strong> to describe your data.</p>
+</li>
+<li>
+<p>Added <strong>type annotations</strong> to function parameters and return values.</p>
+</li>
+<li>
+<p>Watched TypeScript <strong>catch a bug</strong> in the editor, before running the code.</p>
+</li>
+<li>
+<p>Produced a green production <strong>build</strong> with <strong>Vite</strong>, gated by the type-checker.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You took working JavaScript and gave it a safety net — the same move your engineers make on every serious front-end project, and the foundation for the React work coming next in Phase 2.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<header><h2 id="_evergreen_insurance_quote_page_vite_build_tooling_and_project_configuration">Evergreen Insurance Quote Page — Vite, Build Tooling, and Project Configuration</h2><p>Lab 2</p></header>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will get hands-on with <strong>Vite</strong> — the build tool that turns a folder of TypeScript and React files into an instant developer experience and an optimized production website. You will run the dev server, watch a change appear without a reload, produce a production build, and add two pieces of configuration your engineers set up on every project: an environment variable and a path alias.</p>
+</div>
+<div class="paragraph">
+<p>This is the second week of the <strong>TypeScript, NPM, and Vite</strong> course. Last week you added types to the Evergreen app; this week you look at the toolchain that runs and ships it. The starter is a small <strong>React</strong> project — a preview of the framework you will meet next in Phase 2. You are <strong>not</strong> expected to write React. You are here to <strong>see</strong> the workflow.</p>
+</div>
+<div class="sect2">
+<h3 id="_a_note_about_keyboard_shortcuts_2">2.1. A Note About Keyboard Shortcuts</h3>
+<div class="paragraph">
+<p>Your lab VM runs inside your browser. If a keyboard shortcut doesn’t reach the VM, use the mouse/menu alternative listed next to it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_youre_doing_this_lab_2">2.2. Why You’re Doing This Lab</h3>
+<div class="paragraph">
+<p>When your engineers say "HMR updated it instantly," "check the <code>dist/</code> folder," "it’s an environment variable," or "use the <code>@</code> alias," they are describing the everyday Vite workflow you are about to run yourself. After this lab, the toolchain under every modern front-end project at Liberty Mutual will feel familiar, not mysterious.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_whats_already_set_up_on_your_lab_vm_2">2.3. What’s Already Set Up on Your Lab VM</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Visual Studio Code</strong> with TypeScript support built in.</p>
+</li>
+<li>
+<p><strong>Node.js and NPM</strong> — already installed; check with <code>node -v</code> and <code>npm -v</code>.</p>
+</li>
+<li>
+<p>The starter project: a small Evergreen-branded <strong>Vite + React + TypeScript</strong> app under <code>src/</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_open_the_project_and_start_the_dev_server">2.4. Open the Project and Start the Dev Server</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open a terminal (Terminal icon in the dock, or <code>Ctrl+Alt+T</code>).</p>
+</li>
+<li>
+<p>Go into the lab folder and open it in VS Code:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">cd</span> ~/Labfiles/evergreen-quote-vite-tooling
+code .</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the project’s packages. This reads <code>package.json</code> and downloads React, Vite, and TypeScript into a <code>node_modules</code> folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm install</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Start the dev server:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Vite prints a local URL (usually <code><a href="http://localhost:5173" class="bare">http://localhost:5173</a></code>). <code>Ctrl+Click</code> it, or open it in Chrome. The Evergreen page appears with a "Count a view" button.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="markdown-alert markdown-alert-note">
+      <p class="markdown-alert-title">
+        <i class="mr-2 ph ph-info"></i>&nbsp;Note
+      </p>
+      <p>Curious what Vite creates from nothing? In a <strong>different</strong> folder you can run <code>npm create vite@latest my-app — --template react-ts</code> to scaffold a brand-new project, then <code>cd my-app</code>, <code>npm install</code>, and <code>npm run dev</code>. We provided a ready-made project so you can focus on the toolchain.</p>
+    </div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> <code>npm install</code> then <code>npm run dev</code> is how every engineer starts work on a front-end project. The <code>node_modules</code> folder is never committed — it is rebuilt from <code>package.json</code> on each machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_watch_hot_module_replacement_hmr">2.5. Watch Hot Module Replacement (HMR)</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>With the dev server running and the page open, click <strong>Count a view</strong> a few times so the counter shows a number greater than zero.</p>
+</li>
+<li>
+<p>The tagline on the page comes from the <code>TAGLINE</code> constant in <code>src/branding.ts</code> — <code>App.tsx</code> renders it as <code>&lt;p className="tagline"&gt;{TAGLINE}&lt;/p&gt;</code>. In VS Code, open <code>src/branding.ts</code> and change that text, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">TAGLINE</span> = <span class="hljs-string">"Coverage that grows with you — now with Vite"</span>;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Save the file (<code>Ctrl+S</code>, or <strong>File &gt; Save</strong>) and look at the browser.</p>
+</li>
+<li>
+<p>The page updates <strong>instantly</strong> — no full reload — and the counter <strong>keeps its value</strong>, even though the edit was in a different module.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> That is Hot Module Replacement. Vite swaps only the module you changed, and React Fast Refresh re-renders the component that uses it while preserving the page’s state — so your counter survives. This tight feedback loop is a big part of why engineers are productive in a modern toolchain — and why "the dev server is down" is a real problem, not a minor one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_the_npm_scripts">2.6. Read the npm Scripts</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>package.json</code> and look at the <code>"scripts"</code> section:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json hljs"><span class="hljs-attr">"scripts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"dev"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"vite"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"build"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"tsc &amp;&amp; vite build"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"preview"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"vite preview"</span>
+<span class="hljs-punctuation">}</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Match each script to what it does:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>dev</code> — starts the dev server you are running now.</p>
+</li>
+<li>
+<p><code>build</code> — type-checks with <code>tsc</code>, then has Vite bundle and optimize for production.</p>
+</li>
+<li>
+<p><code>preview</code> — serves the finished production build locally so you can sanity-check it.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> <code>npm run &lt;name&gt;</code> just runs the command on the right. These three names are the same in almost every Vite project, so once you know them here, you know them everywhere.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_build_for_production_and_inspect_dist">2.7. Build for Production and Inspect dist/</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Stop the dev server (<code>Ctrl+C</code> in the terminal), then run the production build:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run build</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Look at the new <code>dist/</code> folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs"><span class="hljs-built_in">ls</span> -R dist</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see an <code>index.html</code> and an <code>assets/</code> folder containing files with names like <code>index-DLniFmw2.js</code> and <code>index-C49dxfbv.css</code>.</p>
+</div>
+</li>
+<li>
+<p>Serve the production build to confirm it works:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">npm run preview</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> <code>dist/</code> is exactly what gets deployed to a web server — nothing else. The scrambled part of each filename is a <strong>content hash</strong>: change the code and the name changes, so browsers never serve a stale cached file. Tree-shaking has also dropped any code the app didn’t use.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_add_an_environment_variable">2.8. Add an Environment Variable</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the project root (next to <code>package.json</code>), create a new file named <code>.env</code> with this content:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash hljs">VITE_APP_TITLE=Evergreen Insurance — Get a Quote</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <code>src/App.tsx</code>. Find the line that sets the title:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tsx hljs"><span class="hljs-keyword">const</span> appTitle = <span class="hljs-variable constant_">COMPANY</span>;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Change it to read the environment variable, with the company name as a fallback:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tsx hljs"><span class="hljs-keyword">const</span> appTitle = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">VITE_APP_TITLE</span> ?? <span class="hljs-variable constant_">COMPANY</span>;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Stop and restart the dev server (<code>Ctrl+C</code>, then <code>npm run dev</code>) — Vite reads <code>.env</code> files at startup. The heading now shows the title from the <code>.env</code> file.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> Configuration that changes between environments — an API address, a feature flag, a title — lives in <code>.env</code> files, not in the code. The <code>VITE_</code> prefix is a safety gate: only prefixed variables are exposed to the browser, so a secret without the prefix can’t leak into the shipped app.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_add_a_path_alias">2.9. Add a Path Alias</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open <code>vite.config.ts</code> and add a <code>resolve.alias</code> entry so <code>@</code> points at the <code>src/</code> folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-typescript hljs"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">"vite"</span>;
+<span class="hljs-keyword">import</span> react <span class="hljs-keyword">from</span> <span class="hljs-string">"@vitejs/plugin-react"</span>;
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">"path"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">react</span>()],
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">"@"</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">"./src"</span>),
+    },
+  },
+});</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <code>tsconfig.json</code> and tell TypeScript about the same alias so it can still check the types. Add these two keys inside <code>"compilerOptions"</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json hljs"><span class="hljs-attr">"baseUrl"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"."</span><span class="hljs-punctuation">,</span>
+<span class="hljs-attr">"paths"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"@/*"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"src/*"</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open <code>src/App.tsx</code> and change the branding import from a relative path to the alias:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tsx hljs"><span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">COMPANY</span>, <span class="hljs-variable constant_">TAGLINE</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"@/branding"</span>;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Restart the dev server (<code>Ctrl+C</code>, then <code>npm run dev</code>). The page still works — the import now resolves through the alias.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Why this matters:</strong> Aliases replace fragile relative paths like <code>../../../utils/format</code> with clean, stable ones like <code>@/utils/format</code>. Moving a file no longer breaks its imports. Note that the alias has to be declared <strong>twice</strong> — once for Vite (which runs the code) and once for TypeScript (which checks it).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review_2">2.10. Review</h3>
+<div class="paragraph">
+<p>In this lab you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ran a <strong>Vite</strong> project with <code>npm install</code> and <code>npm run dev</code>.</p>
+</li>
+<li>
+<p>Watched <strong>Hot Module Replacement</strong> update the page instantly while preserving state.</p>
+</li>
+<li>
+<p>Mapped the <strong>npm scripts</strong> — <code>dev</code>, <code>build</code>, and <code>preview</code>.</p>
+</li>
+<li>
+<p>Produced a production <strong>build</strong> and inspected the hashed assets in <code>dist/</code>.</p>
+</li>
+<li>
+<p>Added a <strong><code>.env</code></strong> environment variable and read it with <code>import.meta.env</code>.</p>
+</li>
+<li>
+<p>Added a <strong>path alias</strong> in both <code>vite.config.ts</code> and <code>tsconfig.json</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You have now seen the full front-end toolchain — from a saved keystroke to a deployable <code>dist/</code> folder. This is the setup your engineers use on every React project, and the foundation for the React work coming next in Phase 2.</p>
+</div>
+</div>
+</div>
+</div>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+  
+const setTheme = (theme) => {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  }
+};
+
+// Check for saved theme or system preference on load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  setTheme('dark');
+}
+
+toggleBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.hasAttribute('data-theme');
+  setTheme(isDark ? 'light' : 'dark');
+});
+
+// TOC Highlight and ScrollSpy Logic
+const tocLinks = document.querySelectorAll('.toc-wrapper a');
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const sidebar = document.querySelector('aside');
+
+const removeActiveClasses = () => {
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    link.classList.remove('active-parent');
+  });
+};
+
+const observerOptions = {
+  root: null,
+  rootMargin: '-10% 0px -75% 0px', 
+  threshold: 0
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      const activeLink = document.querySelector(`.toc-wrapper a[href="#${id}"]`);
+      
+      if (activeLink) {
+        removeActiveClasses();
+        activeLink.classList.add('active');
+
+        // Logic to highlight the Top-Level Parent
+        const parentList = activeLink.closest('.sectlevel2');
+        if (parentList) {
+            // If we are in a sub-menu, find the main link for this section
+            const topLevelLink = parentList.parentElement.querySelector(':scope > a');
+            if (topLevelLink) {
+                topLevelLink.classList.add('active-parent');
+            }
+        }
+        
+        // Ensure sidebar visibility
+        const linkRect = activeLink.getBoundingClientRect();
+        const sidebarRect = sidebar.getBoundingClientRect();
+        if (linkRect.top < sidebarRect.top || linkRect.bottom > sidebarRect.bottom) {
+          activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+  });
+}, observerOptions);
+
+sections.forEach(section => observer.observe(section));
+
+// Collapsible TOC Logic with Arrow Animation
+const plusIcons = document.querySelectorAll('.toc-plus-icon');
+
+plusIcons.forEach(icon => {
+  icon.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const parentLi = icon.closest('li');
+    const subLevel = parentLi.querySelector('.sectlevel2');
+
+    if (subLevel) {
+      const isExpanded = subLevel.classList.contains('is-visible');
+      
+      if (isExpanded) {
+        subLevel.classList.remove('is-visible');
+        parentLi.classList.remove('is-expanded'); // Animates arrow back to right
+      } else {
+        subLevel.classList.add('is-visible');
+        parentLi.classList.add('is-expanded');    // Animates arrow to down
+      }
+    }
+  });
+});
+  </script>
+
+</body></html>
