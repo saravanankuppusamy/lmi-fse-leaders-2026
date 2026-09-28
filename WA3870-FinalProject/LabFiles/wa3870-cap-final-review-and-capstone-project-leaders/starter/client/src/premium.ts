@@ -1,0 +1,26 @@
+// The premium logic, typed (provided). The components call this; you never
+// modify the function. (These are the Phase 2-era rates the
+// app shipped with. CONFIG: Day 2 aligns them with the API's standardized
+// rates; the values are the only thing that changes.)
+import type { CoverageType } from "./types";
+
+const BASE_RATES: Record<CoverageType, number> = {
+  auto: 85,
+  home: 130,
+  life: 65,
+};
+
+export function calculatePremium(
+  type: CoverageType,
+  age: number,
+  coverageAmount: number
+): number {
+  const base = BASE_RATES[type] ?? 100;
+  const ageFactor = age < 25 ? 1.4 : age > 60 ? 1.25 : 1.0;
+  const coverageFactor = coverageAmount / 10000;
+  return base * ageFactor * coverageFactor;
+}
+
+export function formatCurrency(value: number): string {
+  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+}

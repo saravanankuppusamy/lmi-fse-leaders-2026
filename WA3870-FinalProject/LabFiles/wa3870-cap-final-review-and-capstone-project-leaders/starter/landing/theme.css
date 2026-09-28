@@ -1,0 +1,119 @@
+/* Evergreen Insurance - the brand theme, standalone edition (provided).
+   Pure CSS, no framework: this page is the Phase 1 era of the product,
+   kept alive as the marketing front door. */
+
+:root {
+  --evg-green: #0f5132;
+  --evg-green-dark: #0b3d26;
+  --evg-green-soft: #e6f0ea;
+  --evg-ink: #1f2a2e;
+  --evg-muted: #6a7a72;
+  --evg-amber: #b45309;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--evg-ink);
+  background: #f7f9f8;
+  line-height: 1.55;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e9e5;
+}
+
+.brand { font-weight: 700; color: var(--evg-green); font-size: 1.15rem; }
+
+.site-nav a {
+  margin-left: 20px;
+  color: var(--evg-ink);
+  text-decoration: none;
+}
+.site-nav a:hover { color: var(--evg-green); }
+
+.launch-banner {
+  padding: 10px 32px;
+  background: var(--evg-amber);
+  color: #ffffff;
+  font-weight: 600;
+  text-align: center;
+}
+
+.hero {
+  padding: 72px 32px;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--evg-green) 0%, var(--evg-green-dark) 100%);
+}
+.hero h1 { margin: 0 0 12px; font-size: 2.4rem; }
+.tagline { margin: 0 auto 28px; max-width: 560px; opacity: 0.92; }
+
+.cta {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--evg-green);
+  font-weight: 700;
+  text-decoration: none;
+}
+.cta:hover { background: var(--evg-green-soft); }
+
+.features, .why, .closing-cta {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+.features h2, .why h2, .closing-cta h2 { color: var(--evg-green); }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  padding: 20px;
+  background: #ffffff;
+  border-left: 4px solid var(--evg-green);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(31, 42, 46, 0.08);
+}
+.feature-card h3 { margin-top: 0; color: var(--evg-green-dark); }
+
+.why ul { padding-left: 20px; }
+.why li { margin-bottom: 8px; }
+
+.closing-cta {
+  text-align: center;
+  background: var(--evg-green-soft);
+  border-radius: 8px;
+  margin-bottom: 48px;
+}
+.closing-cta .cta {
+  background: var(--evg-green);
+  color: #ffffff;
+}
+.closing-cta .cta:hover { background: var(--evg-green-dark); }
+
+.site-footer {
+  padding: 24px 32px;
+  text-align: center;
+  color: var(--evg-muted);
+  background: #ffffff;
+  border-top: 1px solid #e3e9e5;
+}
+
+@media (max-width: 640px) {
+  .site-header { flex-direction: column; gap: 10px; }
+  .hero { padding: 48px 20px; }
+  .hero h1 { font-size: 1.8rem; }
+}
