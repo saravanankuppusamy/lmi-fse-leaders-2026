@@ -1,0 +1,43 @@
+# k8s/deployment.yaml — run the Evergreen API on Kubernetes (Starter)
+# ------------------------------------------------------------------
+# A Deployment declares the DESIRED STATE for your app. Kubernetes then works
+# continuously to make reality match it — starting pods, replacing crashed ones,
+# and rolling out new versions. Fill in the TODOs by following the lab guide.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evergreen-quote-api
+  labels:
+    app: evergreen-quote-api
+spec:
+  # TODO 1: run THREE copies (replicas) of the API for availability and scale.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evergreen-quote-api
+  template:
+    metadata:
+      labels:
+        app: evergreen-quote-api
+    spec:
+      containers:
+        - name: evergreen-quote-api
+          # TODO 2: use the image you build in this lab, tag and all:
+          #         evergreen-quote-api:1.0  (the :1.0 tag matters, see the guide)
+          image: REPLACE_ME
+          ports:
+            # TODO 3: the API listens on port 3000 inside the container.
+            - containerPort: 0
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5

@@ -1,0 +1,21 @@
+# k8s/service.yaml — a stable network endpoint for the API pods (Starter)
+# -----------------------------------------------------------------------
+# Pods come and go (and each has a changing IP). A Service gives them ONE stable
+# address and load-balances traffic across all the matching pods.
+apiVersion: v1
+kind: Service
+metadata:
+  name: evergreen-quote-api
+spec:
+  # TODO 4: a LoadBalancer service asks the platform for an external address.
+  #         On the local kind cluster nothing answers, so EXTERNAL-IP stays
+  #         <pending>. On EKS the same line gets a real AWS load balancer.
+  #         Set the type to LoadBalancer.
+  type: ClusterIP
+  # TODO 5: select the pods to send traffic to — match the Deployment's label.
+  selector:
+    app: REPLACE_ME
+  ports:
+    - port: 80
+      # TODO 6: forward to the container's port (3000).
+      targetPort: 0
